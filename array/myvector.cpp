@@ -67,6 +67,8 @@ class myvector
             // if index is within the range
             if (index < current)
                 return arr[index];
+            else
+                return 0;
         }
 
         // function to delete last element
