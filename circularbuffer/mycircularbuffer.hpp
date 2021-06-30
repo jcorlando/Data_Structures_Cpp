@@ -21,7 +21,12 @@ mycircularbuffer<T>::mycircularbuffer() { ; }
 template<class T>
 T mycircularbuffer<T>::get_at(const int &value) const
 {
-    return vectr.at(value);
+    try
+        { return vectr.at(value); }
+    
+    catch(const std::exception& e)
+        { ; }
+    
 }
 
 template<class T>
