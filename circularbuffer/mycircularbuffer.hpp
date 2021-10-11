@@ -1,44 +1,42 @@
 #ifndef MYCIRCULARBUFFER_H
 #define MYCIRCULARBUFFER_H
 #include <iostream>
+#include <array>
 #include <vector>
 
-template<class T>
+template<class T, unsigned int size>
 class mycircularbuffer
 {
 private:
-    std::vector<T> vectr;
+    std::array<T, size> array;
 public:
+    // Constructor
     mycircularbuffer();
-    int vectr_size() const;
-    void insert_end(const T &value);
+
+    int array_size() const;
+
     T get_at(const int &value) const;
 };
 
-template<class T>
-mycircularbuffer<T>::mycircularbuffer() { ; }
 
-template<class T>
-T mycircularbuffer<T>::get_at(const int &value) const
+
+// Constructor
+template<class T, unsigned int size>
+mycircularbuffer<T, size>::mycircularbuffer() { ; }
+
+
+template<class T, unsigned int size>
+T mycircularbuffer<T, size>::get_at(const int &value) const
 {
     try
-        { return vectr.at(value); }
+        { return array.at(value); }
     
     catch(const std::exception& e)
         { ; }
-    
 }
 
-template<class T>
-void mycircularbuffer<T>::insert_end(const T &value)
-{
-    vectr.push_back(value);
-}
 
-template<class T>
-int mycircularbuffer<T>::vectr_size() const
-{
-    return vectr.size();
-}
+template<class T, unsigned int size>
+int mycircularbuffer<T, size>::array_size() const   { return array.size(); }
 
 #endif // MYCIRCULARBUFFER_H
