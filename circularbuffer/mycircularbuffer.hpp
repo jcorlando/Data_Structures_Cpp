@@ -4,25 +4,31 @@
 #include <array>
 #include <memory>
 
+
+// FIFO (First In First Out) Data Structure
 template<class T, unsigned int size>
 class mycircularbuffer
 {
 private:
     std::array<T, size> array;
     unsigned int front;
+    unsigned int back;
     unsigned int current_length;
 public:
     // Constructor
     mycircularbuffer();
 
-    
+    // Insert new value if space avaliable
+    void insert(T value);
 
-
-    // Get the Front Pointer
+    // Get the Front Position
     unsigned int get_front() const;
     
-    // Get the Back Pointer
+    // Get the Back Position
     unsigned int get_back() const;
+
+    // Get the Current Length
+    unsigned int get_length() const;
 
     // Get the full array size
     int array_size() const;
@@ -38,6 +44,7 @@ template<class T, unsigned int size>
 mycircularbuffer<T, size>::mycircularbuffer()
 {
     front = 0;
+    back = 0;
     current_length = 0;
 }
 
@@ -62,7 +69,27 @@ unsigned int mycircularbuffer<T, size>::get_front() const   { return this->front
 
 
 template<class T, unsigned int size>
-unsigned int mycircularbuffer<T, size>::get_back() const   { return this->front; }
+unsigned int mycircularbuffer<T, size>::get_back() const   { return ( this->back ); }
+
+
+template<class T, unsigned int size>
+unsigned int mycircularbuffer<T, size>::get_length() const   { return ( this->current_length ); }
+
+
+template<class T, unsigned int size>
+void mycircularbuffer<T, size>::insert(T value)
+{
+    if( current_length < array.size() )
+    {
+        array[back] = value;
+        current_length = current_length + 1;
+        if( current_length < array.size() ) back = ( back + 1 ) % ( array.size() );
+    }
+    else
+    {
+        std::cout << "The FIFO is Full...  Cannot Insert" << std::endl;
+    }
+}
 
 
 #endif // MYCIRCULARBUFFER_H
