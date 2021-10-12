@@ -9,7 +9,7 @@
 
 
 // Below are different testing functions
-void insert_func(mycircularbuffer<double, 5>& object, double value)
+void insert_func(mycircularbuffer<double, 5> &object, double value)
 {
     std::cout << "Inserting Now..." << std::endl;
 
@@ -32,6 +32,8 @@ int main()
     mycircularbuffer<double, 5> buff_1;
 
     // Display initial values of the buffer
+    std::cout << "Initial values are..." << std::endl;
+
     std::cout << "The Array size is : " << buff_1.array_size() << std::endl;
 
     std::cout << "The Front is at : " << buff_1.get_front() << std::endl;
@@ -42,9 +44,12 @@ int main()
 
 
     // Inserting values
-
     insert_func(buff_1, 1.111);
-
+    insert_func(buff_1, 2.222);
+    insert_func(buff_1, 3.333);
+    insert_func(buff_1, 4.444);
+    insert_func(buff_1, 5.555);
+    insert_func(buff_1, 6.666);
 
 
 
