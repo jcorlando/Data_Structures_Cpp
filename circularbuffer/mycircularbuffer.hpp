@@ -21,6 +21,9 @@ public:
     // Insert new value if space avaliable
     void insert(T value);
 
+    // Remove value from FIFO
+    T remove();
+
     // Get the Front Position
     unsigned int get_front() const;
     
@@ -92,4 +95,21 @@ void mycircularbuffer<T, size>::insert(T value)
 }
 
 
+template<class T, unsigned int size>
+T mycircularbuffer<T, size>::remove()
+{
+    T return_value;
+    if( current_length > 0 )
+    {
+        return_value = array[front];
+        current_length = current_length - 1;
+        if( current_length > 0 ) front = ( front + 1 ) % ( array.size() );
+        return return_value;
+    }
+    else
+    {
+        std::cout << "The FIFO is Empty...  Cannot Remove" << std::endl;
+        return 0;
+    }
+}
 #endif // MYCIRCULARBUFFER_H
