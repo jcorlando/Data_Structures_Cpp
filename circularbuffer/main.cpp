@@ -23,6 +23,20 @@ void insert_func(mycircularbuffer<double, 5> &object, double value)
 }
 
 
+void remove_func(mycircularbuffer<double, 5> &object, double value)
+{
+    std::cout << "Inserting Now..." << std::endl;
+
+    object.insert(value);
+
+    std::cout << "The Front is at : " << object.get_front() << std::endl;
+
+    std::cout << "The Back is at : " << object.get_back() << std::endl;
+
+    std::cout << "The current length is : " << object.get_length() << std::endl << std::endl;
+}
+
+
 
 
 
@@ -50,6 +64,7 @@ int main()
     insert_func(buff_1, 4.444);
     insert_func(buff_1, 5.555);
     insert_func(buff_1, 6.666);
+    insert_func(buff_1, 7.777);
 
 
 
