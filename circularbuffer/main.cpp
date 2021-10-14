@@ -23,11 +23,11 @@ void insert_func(mycircularbuffer<double, 5> &object, double value)
 }
 
 
-void remove_func(mycircularbuffer<double, 5> &object, double value)
+void remove_func(mycircularbuffer<double, 5> &object)
 {
-    std::cout << "Inserting Now..." << std::endl;
+    std::cout << "Removing Now..." << std::endl;
 
-    object.insert(value);
+    std::cout << "Removed " << object.remove() << " value" << std::endl;
 
     std::cout << "The Front is at : " << object.get_front() << std::endl;
 
@@ -57,6 +57,12 @@ int main()
     std::cout << "The current length is : " << buff_1.get_length() << std::endl << std::endl;
 
 
+
+
+
+
+    // <---------------------------->
+
     // Inserting values
     insert_func(buff_1, 1.111);
     insert_func(buff_1, 2.222);
@@ -66,39 +72,11 @@ int main()
     insert_func(buff_1, 6.666);
     insert_func(buff_1, 7.777);
 
-
-
     // <---------------------------->
 
-    // std::cout << "Removing Now..." << std::endl;
-
-    // std::cout << "Removed " << buff_1.remove() << " value" << std::endl;
-
-    // std::cout << "The Front is at : " << buff_1.get_front() << std::endl;
-
-    // std::cout << "The Back is at : " << buff_1.get_back() << std::endl;
-
-    // std::cout << "The current length is : " << buff_1.get_length() << std::endl << std::endl;
-
-    // std::cout << "Removing Now..." << std::endl;
-
-    // std::cout << "Removed " << buff_1.remove() << " value" << std::endl;
-
-    // std::cout << "The Front is at : " << buff_1.get_front() << std::endl;
-
-    // std::cout << "The Back is at : " << buff_1.get_back() << std::endl;
-
-    // std::cout << "The current length is : " << buff_1.get_length() << std::endl << std::endl;
-
-    // std::cout << "Removing Now..." << std::endl;
-
-    // std::cout << "Removed " << buff_1.remove() << " value" << std::endl;
-
-    // std::cout << "The Front is at : " << buff_1.get_front() << std::endl;
-
-    // std::cout << "The Back is at : " << buff_1.get_back() << std::endl;
-
-    // std::cout << "The current length is : " << buff_1.get_length() << std::endl << std::endl;
+    // Removing values
+    remove_func(buff_1);
+    remove_func(buff_1);
 
     // Program Done!
 
