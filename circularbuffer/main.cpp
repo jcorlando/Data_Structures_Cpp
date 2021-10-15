@@ -45,6 +45,8 @@ int main()
     // Create Circular buffer object
     mycircularbuffer<double, 5> buff_1;
 
+    // <---------------------------->
+
     // Display initial values of the buffer
     std::cout << "Initial values are..." << std::endl;
 
@@ -55,11 +57,6 @@ int main()
     std::cout << "The Back is at : " << buff_1.get_back() << std::endl;
 
     std::cout << "The current length is : " << buff_1.get_length() << std::endl << std::endl;
-
-
-
-
-
 
     // <---------------------------->
 
@@ -82,8 +79,10 @@ int main()
     remove_func(buff_1);
     remove_func(buff_1);
 
-    // Program Done!
+    // <---------------------------->
 
+    // Program Done!
     std::cout << "Program Done!" << std::endl;
+
     return 0;
 }
