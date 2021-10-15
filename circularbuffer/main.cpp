@@ -96,6 +96,24 @@ int main()
 
     // <---------------------------->
 
+    // Inserting values
+    insert_func(buff_1, 8.888);
+    buff_1.print_buf();
+    insert_func(buff_1, 9.999);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    insert_func(buff_1, 10.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 11.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 12.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 13.1);
+    buff_1.print_buf();
+
+    // <---------------------------->
+
     // Program Done!
     std::cout << "Program Done!" << std::endl;
 
