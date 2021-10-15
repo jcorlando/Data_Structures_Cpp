@@ -78,6 +78,7 @@ int main()
     insert_func(buff_1, 6.666);
     buff_1.print_buf();
     insert_func(buff_1, 7.777);
+    buff_1.print_buf();
 
     // <---------------------------->
 
@@ -93,6 +94,7 @@ int main()
     remove_func(buff_1);
     buff_1.print_buf();
     remove_func(buff_1);
+    buff_1.print_buf();
 
     // <---------------------------->
 
@@ -111,6 +113,7 @@ int main()
     buff_1.print_buf();
     insert_func(buff_1, 13.1);
     buff_1.print_buf();
+    
 
     // <---------------------------->
 
