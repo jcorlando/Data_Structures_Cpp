@@ -70,7 +70,9 @@ T mycircularbuffer<T, size>::get_at(const int &value) const
 template<class T, unsigned int size>
 void mycircularbuffer<T, size>::print_buf()
 {
-    ;
+    std::cout << "|";
+    for (auto each : array) std::cout << each << "|";
+    std::cout << std::endl << std::endl;
 }
 
 

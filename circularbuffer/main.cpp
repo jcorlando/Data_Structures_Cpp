@@ -60,23 +60,38 @@ int main()
 
     // <---------------------------->
 
+    buff_1.print_buf();
+
+    // <---------------------------->
+
     // Inserting values
     insert_func(buff_1, 1.111);
+    buff_1.print_buf();
     insert_func(buff_1, 2.222);
+    buff_1.print_buf();
     insert_func(buff_1, 3.333);
+    buff_1.print_buf();
     insert_func(buff_1, 4.444);
+    buff_1.print_buf();
     insert_func(buff_1, 5.555);
+    buff_1.print_buf();
     insert_func(buff_1, 6.666);
+    buff_1.print_buf();
     insert_func(buff_1, 7.777);
 
     // <---------------------------->
 
     // Removing values
     remove_func(buff_1);
+    buff_1.print_buf();
     remove_func(buff_1);
+    buff_1.print_buf();
     remove_func(buff_1);
+    buff_1.print_buf();
     remove_func(buff_1);
+    buff_1.print_buf();
     remove_func(buff_1);
+    buff_1.print_buf();
     remove_func(buff_1);
 
     // <---------------------------->
