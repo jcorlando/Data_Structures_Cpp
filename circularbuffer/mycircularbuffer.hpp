@@ -24,6 +24,9 @@ public:
     // Remove value from FIFO
     void remove();
 
+    // Print entire Buffer Array
+    void print_buf();
+
     // Get the Front Position
     unsigned int get_front() const;
     
@@ -60,6 +63,14 @@ T mycircularbuffer<T, size>::get_at(const int &value) const
     
     catch(const std::exception& e)
         { ; }
+}
+
+
+// Print entire Buffer Array
+template<class T, unsigned int size>
+void mycircularbuffer<T, size>::print_buf()
+{
+    ;
 }
 
 
