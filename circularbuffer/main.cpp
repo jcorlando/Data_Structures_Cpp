@@ -27,7 +27,7 @@ void remove_func(mycircularbuffer<double, 5> &object)
 {
     std::cout << "Removing Now..." << std::endl;
 
-    std::cout << "Removed " << object.remove() << " value" << std::endl;
+    object.remove(); 
 
     std::cout << "The Front is at : " << object.get_front() << std::endl;
 
@@ -75,6 +75,10 @@ int main()
     // <---------------------------->
 
     // Removing values
+    remove_func(buff_1);
+    remove_func(buff_1);
+    remove_func(buff_1);
+    remove_func(buff_1);
     remove_func(buff_1);
     remove_func(buff_1);
 
