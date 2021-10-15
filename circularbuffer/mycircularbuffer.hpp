@@ -117,7 +117,7 @@ void mycircularbuffer<T, size>::remove()
     if( current_length > 0 )
     {
         print_value = array[front];
-        array[front] =  0;
+        array[front] =  0; // <--- Remove this to make more efficient
         current_length = current_length - 1;
         front = ( front + 1 ) % ( array.size() );
         std::cout << "Removed " << print_value << " value" << std::endl;

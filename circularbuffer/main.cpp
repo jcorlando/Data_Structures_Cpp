@@ -103,6 +103,10 @@ int main()
     buff_1.print_buf();
     insert_func(buff_1, 9.999);
     buff_1.print_buf();
+
+    // <---------------------------->
+
+    // Testing values
     remove_func(buff_1);
     buff_1.print_buf();
     insert_func(buff_1, 10.1);
@@ -113,7 +117,58 @@ int main()
     buff_1.print_buf();
     insert_func(buff_1, 13.1);
     buff_1.print_buf();
-    
+    remove_func(buff_1);
+    buff_1.print_buf();
+    insert_func(buff_1, 14.1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    insert_func(buff_1, 15.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 15.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 15.1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    insert_func(buff_1, 16.1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    insert_func(buff_1, 10.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 11.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 12.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 13.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 14.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 15.1);
+    buff_1.print_buf();
+    insert_func(buff_1, 15.1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
+    remove_func(buff_1);
+    buff_1.print_buf();
 
     // <---------------------------->
 
