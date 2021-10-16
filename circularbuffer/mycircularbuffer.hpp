@@ -57,6 +57,7 @@ mycircularbuffer<T, size>::mycircularbuffer()
 }
 
 
+// Get element at location ???
 template<class T, unsigned int size>
 T mycircularbuffer<T, size>::get_at(const int &value) const
 {
@@ -94,6 +95,7 @@ template<class T, unsigned int size>
 unsigned int mycircularbuffer<T, size>::get_length() const   { return ( this->current_length ); }
 
 
+// insert element at top of buffer
 template<class T, unsigned int size>
 void mycircularbuffer<T, size>::insert(T value)
 {
@@ -110,6 +112,7 @@ void mycircularbuffer<T, size>::insert(T value)
 }
 
 
+// remove element from bottom
 template<class T, unsigned int size>
 void mycircularbuffer<T, size>::remove()
 {
