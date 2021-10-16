@@ -4,7 +4,10 @@
 #include <unistd.h>
 #include "mycordic.hpp"
 
-#define CORDIC_PRECISION 10
+#define LUT_PRECISION 10
+
+// LUT that holds inverse tangents of powers 2^-1
+std::array<double, LUT_PRECISION> lut;
 
 int main()
 {
@@ -12,10 +15,10 @@ int main()
     
     uint8_t iter = 0; // iteration value
 
-    // LUT that holds inverse tangents of powers 2^-1
-    std::array<double, CORDIC_PRECISION> array;
+    for(int i = 0; i < LUT_PRECISION; i++) lut[i] = atan(std::pow(2, -i));
 
-    for(int i = 0; i < 10; i++) std::cout << atan(std::pow(2, -i)) << std::endl;
+    for(auto each : lut) std::cout << each << std::endl;
+    
 
 
     return 0;
