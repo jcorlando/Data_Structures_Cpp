@@ -8,13 +8,10 @@
 
 namespace mycordic
 {
-    // scaling factor for x and y coordinates
-    const double K = 0.6072529350088812561694;
-
     // declare x, y and d
     double x;
     double y;
-    double d;
+    bool d;
     double counter;
 
     // LUT that holds inverse tangents of powers 2^-1
@@ -29,13 +26,11 @@ namespace mycordic
     {
         double x_temp = x;
         double y_temp = y;
-        std::cout << "  x   is  : " << x << std::endl;
-        std::cout << "  y   is  : " << y << std::endl;
-        std::cout << "x_temp is : " << x_temp << std::endl;
-        std::cout << "y_temp is : " << y_temp << std::endl;
-        std::cout << "  d   is  : " << d << std::endl;
-        x = K*( x_temp - ( (d)*(y_temp)*(std::pow(2, -counter)) ) );
-        y = K*( y_temp + ( (d)*(x_temp)*(std::pow(2, -counter)) ) );
+        double divisor = std::pow(2, counter);
+        if(d) x = ( x_temp -  (y_temp/divisor) );
+        else  x = ( x_temp +  (y_temp/divisor) );
+        if(d) y = ( y_temp +  (x_temp/divisor) );
+        else  y = ( y_temp -  (x_temp/divisor) );
     }
 
 
@@ -43,31 +38,29 @@ namespace mycordic
     void calc_cordic(double angle)
     {
         // Initialize x and y values
-        counter = 0;  x = 1.0;  y = 0.0;
+        counter = 0;
+        x = 0.6072529350088812561694;
+        y = 0.0;
         
         for(auto each : lut)
         {
-            std::cout << std::endl << "iteration : " << counter + 1 << std::endl << std::endl;
             if(angle >= 0)
             {
-                d = 1.0;
+                d = true;
                 angle = angle - each;
             }
             else
             {
-                d = -1.0;
+                d = false;
                 angle = angle + each;
             }
             
             x_y_calculation();
             counter++;
         }
-
+        std::cout << "  Cosine is : " << x << std::endl;
+        std::cout << "  Sine   is : " << y << std::endl;
     }
-
-
-
-
 
 }
 #endif // MYCORDIC_H
