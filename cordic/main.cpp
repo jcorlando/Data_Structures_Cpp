@@ -10,15 +10,10 @@
 int main()
 {
     mycordic::populate_lut();
+    
+    mycordic::calc_cordic(30.0);
+    
 
-    // print values to ensure correctness
-    // for(auto each : mycordic::lut) std::cout << each << std::endl;
-    
-    
-    
-    mycordic::calc_cordic();
-    
-    
     
 
 
