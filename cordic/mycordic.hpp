@@ -2,10 +2,14 @@
 #define MYCORDIC_H
 
 
+// Change this to create a more precise algortihm
+#define LUT_PRECISION 20
+
+
 namespace mycordic
 {
-    // Change this to create a more precise algortihm
-    #define LUT_PRECISION 20
+    // scaling factor for x and y coordinates
+    const double K = 0.6072529350088812561694;
 
     // angle to calculate SIN or COS of
     double angle = 30.0;
@@ -16,9 +20,6 @@ namespace mycordic
     // Populate array with values !!!! Multiply by *(180/M_PI) to convert to degrees
     void populate_lut() { for(int i = 0; i < LUT_PRECISION; i++) lut[i] = atan(std::pow(2, -i))*(180/M_PI); }
 
-    // scaling factor for x and y coordinates
-    const double K = 0.6072529350088812561694;
-
 
     void calc_cordic()
     {
@@ -26,10 +27,12 @@ namespace mycordic
         {
             if(angle >= 0)
             {
+                // std::cout << "  - " << std::endl;
                 angle = angle - each;
             }
             else
             {
+                // std::cout << "  + " << std::endl;
                 angle = angle + each;
             }
         }
