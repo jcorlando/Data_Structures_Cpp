@@ -20,9 +20,9 @@ int main()
     double test = std::cos( 180 * (M_PI/180) );
     // mycordic::calc_cordic(0);
 
-    // <----------End Timer---------->
+    // <-----------End Timer----------->
     auto stop = std::chrono::high_resolution_clock::now();
-    // <----------End Timer---------->
+    // <-----------End Timer----------->
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
     std::cout << "Time taken by function: " << duration.count() << " microseconds" << std::endl;
