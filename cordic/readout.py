@@ -11,7 +11,10 @@ from scipy.io import wavfile
 
 with open('output.dat') as f:
     lines = f.read().splitlines()
-        
+
+
+for each in range(len(lines)):
+    print(lines[each])
 
 
 
