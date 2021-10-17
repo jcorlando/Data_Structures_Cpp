@@ -42,6 +42,12 @@ namespace mycordic
         x = 0.6072529350088812561694;
         y = 0.0;
         double original_angle = angle;
+
+        if(angle > 270.0) angle = angle - 360;
+        else if(angle > 90.0)  angle = angle - 180;
+        else if(angle < -270.0) angle = angle + 360;
+        else if(angle < -90.0) angle = angle + 180;
+        
         
         for(auto each : lut)
         {
@@ -59,8 +65,32 @@ namespace mycordic
             x_y_calculation();
             counter++;
         }
+
+
+        if(original_angle > 270.0)
+        {
+            ;
+        }
+        else if(original_angle > 90.0)
+        {
+            x = -1*x;
+            y = -1*y;
+        }
+        else if(original_angle < -270.0)
+        {
+            ;
+        }
+        else if(original_angle < -90.0)
+        {
+            ;
+        }
+
+
+
         std::cout << " Cosine of " << original_angle << "\u02DA is : " << x << std::endl;
         std::cout << " Sine of   " << original_angle << "\u02DA is : " << y << std::endl;
+
+
     }
 
 }
