@@ -10,8 +10,8 @@ from scipy.io import wavfile
 
 
 with open('output.dat') as f:
-    for line in f:
-        print(line.strip())
+    lines = f.read().splitlines()
+        
 
 
 
