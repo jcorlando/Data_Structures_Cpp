@@ -3,7 +3,7 @@
 
 
 // Change this to create a more precise algortihm
-#define LUT_PRECISION 20
+#define LUT_PRECISION 50
 
 
 namespace mycordic
@@ -41,6 +41,7 @@ namespace mycordic
         counter = 0;
         x = 0.6072529350088812561694;
         y = 0.0;
+        double original_angle = angle;
         
         for(auto each : lut)
         {
@@ -58,8 +59,8 @@ namespace mycordic
             x_y_calculation();
             counter++;
         }
-        std::cout << "  Cosine is : " << x << std::endl;
-        std::cout << "  Sine   is : " << y << std::endl;
+        std::cout << " Cosine of " << original_angle << "\u02DA is : " << x << std::endl;
+        std::cout << " Sine of   " << original_angle << "\u02DA is : " << y << std::endl;
     }
 
 }
