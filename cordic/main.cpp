@@ -2,7 +2,7 @@
 #include <array>
 #include <unistd.h>
 #include <iostream>
-#include <fstream>
+#include <chrono>
 #include "mycordic.hpp"
 
 // CORDIC approximation algorithm to be tested
@@ -12,20 +12,20 @@ int main()
 {
     mycordic::populate_lut();
 
-    double test_angle = 0.0;
 
-    std::ofstream myfile;
-    myfile.open("output.dat");
+    // <----------Start Timer---------->
+    auto start = std::chrono::high_resolution_clock::now();
+    // <----------Start Timer---------->
 
-    for (unsigned int i = 0; i < 1081; i++)
-    {
-        mycordic::calc_cordic(test_angle, myfile);
+    double test = std::cos( 180 * (M_PI/180) );
+    // mycordic::calc_cordic(0);
 
-        test_angle = test_angle + 0.333333333333333333333333333333333333333333333333333333333333333333333333333333333333;
-    }
+    // <----------End Timer---------->
+    auto stop = std::chrono::high_resolution_clock::now();
+    // <----------End Timer---------->
 
-    
-    myfile.close();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    std::cout << "Time taken by function: " << duration.count() << " microseconds" << std::endl;
     
     return 0;
 }

@@ -35,7 +35,7 @@ namespace mycordic
 
 
 
-    void calc_cordic(double angle, std::ofstream& myfile)
+    void calc_cordic(double angle)
     {
         // Initialize x and y values
         counter = 0;
@@ -85,12 +85,9 @@ namespace mycordic
             ;
         }
 
-        
+        // std::cout << " Cosine of " << original_angle << "\u02DA is : " << x << std::endl;
+        // std::cout << " Sine of   " << original_angle << "\u02DA is : " << y << std::endl;
 
-        std::cout << " Cosine of " << original_angle << "\u02DA is : " << x << std::endl;
-        std::cout << " Sine of   " << original_angle << "\u02DA is : " << y << std::endl;
-
-        myfile << x << "," << y << std::endl;
     }
 
 }
