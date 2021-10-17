@@ -9,15 +9,24 @@
 // LUT that holds inverse tangents of powers 2^-1
 std::array<double, LUT_PRECISION> lut;
 
+const double K = 0.6072529350088812561694;
+
 int main()
 {
     // <---------------------------->
     
-    uint8_t iter = 0; // iteration value
+    uint8_t i = 0; // <--- CORDIC iteration value
 
-    for(int i = 0; i < LUT_PRECISION; i++) lut[i] = atan(std::pow(2, -i));
+    // Populate array with values
+    for(int j = 0; j < LUT_PRECISION; j++) lut[j] = atan(std::pow(2, -j));
 
-    for(auto each : lut) std::cout << each << std::endl;
+    // print values to ensure correctness
+    // for(auto each : lut) std::cout << each << std::endl;
+    
+    
+    // 
+    // 
+
     
 
 
