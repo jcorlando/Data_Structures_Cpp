@@ -90,7 +90,7 @@ namespace mycordic
         std::cout << " Cosine of " << original_angle << "\u02DA is : " << x << std::endl;
         std::cout << " Sine of   " << original_angle << "\u02DA is : " << y << std::endl;
 
-        myfile << x << ", " << y << std::endl;
+        myfile << x << "," << y << std::endl;
     }
 
 }

@@ -13,8 +13,19 @@ with open('output.dat') as f:
     lines = f.read().splitlines()
 
 
+cosine = []
+sine = []
+
 for each in range(len(lines)):
-    print(lines[each])
+    cosine.append(lines[each].split(',')[0])
+    sine.append(lines[each].split(',')[1])
+
+# for each in range(len(cosine)):
+#     print(cosine[each])
+
+# for each in range(len(sine)):
+#     print(sine[each])
+
 
 
 
