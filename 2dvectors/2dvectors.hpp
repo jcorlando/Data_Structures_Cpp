@@ -5,7 +5,7 @@
 namespace my2dvectors
 {
     template <class T>
-    class my2dvector
+    class vector2d
     {
         private:
             ;
