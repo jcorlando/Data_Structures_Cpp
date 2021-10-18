@@ -1,7 +1,7 @@
 CFLAGS = -std=c++17
 LDFLAGS = 
 
-main: main.cpp 2dvectors.hpp
+main: main.cpp myvectors.hpp
 	g++ $(CFLAGS) -o main main.cpp $(LDFLAGS)
 
 .PHONY: run clean
