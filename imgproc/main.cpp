@@ -2,31 +2,29 @@
 #include <iostream>
 #include "imageprocessing.hpp"
 
-using namespace cv;
-
 
 int main()
 {
     // Read the image file
-    Mat image = imread("./Hello.jpg");
+    cv::Mat image = cv::imread("./lena.jpg");
 
     // Check for failure
     if (image.empty())
     {
-        cout << "Could not open or find the image" << endl;
-        cin.get(); //wait for any key press
+        std::cout << "Could not open or find the image" << std::endl;
+        std::cin.get(); //wait for any key press
         return -1;
     }
 
-    String windowName = "The Guitar"; //Name of the window
+    cv::String windowName = "Lena JPG"; //Name of the window
 
-    namedWindow(windowName); // Create a window
+    cv::namedWindow(windowName); // Create a window
 
-    imshow(windowName, image); // Show our image inside the created window.
+    cv::imshow(windowName, image); // Show our image inside the created window.
 
-    waitKey(0); // Wait for any keystroke in the window
+    cv::waitKey(0); // Wait for any keystroke in the window
 
-    destroyWindow(windowName); //destroy the created window
+    cv::destroyWindow(windowName); //destroy the created window
 
     return 0;
 }
