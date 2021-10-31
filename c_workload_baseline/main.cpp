@@ -6,7 +6,7 @@
 
 #define N 10000000000 // <- Change this between 100000000 and 10000000000
 
-void* WORKLOAD(int *a)
+void* WORKLOAD(long *a)
 {
   for (long i = 0; i < N; ++i)  (*a)++;
   return NULL;
@@ -17,7 +17,7 @@ int main()
     // Setup variables
     clock_t start, end;
     double cpu_time_used;
-    int a = 0;
+    long a = 0;
     // Setup variables
 
     start = clock();
