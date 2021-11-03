@@ -8,22 +8,15 @@
 #include <sys/wait.h>
 #include "workload.hpp"
 
-
 int main()
 {
     // Setup variables
     double cpu_time_used;
-    long a = 0;
-    // Setup variables
-
-
     
     // <----------Start Timer---------->
     auto start = std::chrono::high_resolution_clock::now();
     // <----------Start Timer---------->
-
-    WORKLOAD(a);
-
+    WORKLOAD();
     // <-----------Stop Timer----------->
     auto stop = std::chrono::high_resolution_clock::now();
     // <-----------Stop Timer----------->

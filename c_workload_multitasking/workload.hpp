@@ -4,7 +4,7 @@
 // My Macros
 #define NUM_TASKS 2 // <- Number of tasks you want to create
 
-void WORKLOAD(long &a)
+void WORKLOAD()
 {
   // Fork first process and get parent process ID
   pid_t pid = fork();
@@ -20,9 +20,7 @@ void WORKLOAD(long &a)
   }
 
 
-  // for(long i = 0; i < N; ++i)  (*a)++;
-
-
+  
   std::cout << "pid is : " << getpid() << std::endl;
   // Kill all child processes
   if(pid != ppid) exit(0);
