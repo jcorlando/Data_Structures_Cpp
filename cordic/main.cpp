@@ -10,7 +10,7 @@
 
 int main()
 {
-    mycordic::populate_lut();
+    populate_lut();
 
 
     // <----------Start Timer---------->
@@ -18,14 +18,14 @@ int main()
     // <----------Start Timer---------->
 
     double test = std::cos( 180 * (M_PI/180) );
-    // mycordic::calc_cordic(0);
+    // calc_cordic(0);
 
     // <-----------End Timer----------->
     auto stop = std::chrono::high_resolution_clock::now();
     // <-----------End Timer----------->
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-    std::cout << "Time taken by function: " << duration.count() << " microseconds" << std::endl;
+    std::cout << "Time taken by function: " << duration.count() << " micro-seconds" << std::endl;
     
     return 0;
 }

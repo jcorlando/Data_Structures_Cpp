@@ -1,8 +1,8 @@
-CFLAGS =
+CFLAGS = -std=c++17
 LDFLAGS = -lm
 
 main: main.cpp 
-	gcc $(CFLAGS) -o main main.cpp $(LDFLAGS)
+	g++ $(CFLAGS) -o main main.cpp $(LDFLAGS)
 
 .PHONY: run clean
 
