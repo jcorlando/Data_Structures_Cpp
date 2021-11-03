@@ -6,11 +6,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
-// My Macros
-#define N 100000000   // <- valid values: 100000000, 1000000000 , 10000000000
-#define NUM_TASKS 2   // <- valid values:     2,         4,           8
-
 #include "workload.hpp"
 
 

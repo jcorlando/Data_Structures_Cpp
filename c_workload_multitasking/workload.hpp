@@ -1,6 +1,9 @@
 #ifndef WORKLOAD_H
 #define WORKLOAD_H
 
+// My Macros
+#define NUM_TASKS 2 // <- Number of tasks you want to create
+
 void WORKLOAD(long &a)
 {
   // Fork first process and get parent process ID
@@ -24,6 +27,5 @@ void WORKLOAD(long &a)
   // Kill all child processes
   if(pid != ppid) exit(0);
 }
-
 
 #endif // WORKLOAD_H
