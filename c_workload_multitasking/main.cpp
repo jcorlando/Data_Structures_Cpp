@@ -21,8 +21,8 @@ int main()
     auto stop = std::chrono::high_resolution_clock::now();
     // <-----------Stop Timer----------->
     
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-    std::cout << "Time taken by function: " << duration.count() << " micro-seconds" << std::endl;
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+    std::cout << "Time taken by function: " << duration.count() << " mili-seconds" << std::endl;
 
     return 0;
 }
