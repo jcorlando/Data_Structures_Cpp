@@ -8,14 +8,21 @@
 #include <sys/wait.h>
 
 #define N 100000000   // <- valid values: 100000000, 1000000000 , 10000000000
-#define NUM_TASKS 4   // <- valid values:     2,         4,           8
+#define NUM_TASKS 8   // <- valid values:     2,         4,           8
 
 void WORKLOAD(long &a)
 {
-  for(uint i = 0; i < (uint)log2(NUM_TASKS); i++) pid_t pid = fork();
-  
+  pid_t pid = fork();
 
-  std::cout << "pid is : " << getpid() << std::endl;
+  for(uint i = 2; i < NUM_TASKS; i++)
+  {
+    if(pid < 0)  /**/  fprintf(stderr, "Fork Failed\n");
+    else if(pid == 0)  pid = fork();
+  }
+
+
+
+  std::cout << "pid is : " << pid << std::endl;
   
 
   // for(long i = 0; i < N; ++i)  (*a)++;
