@@ -1,8 +1,6 @@
 #include <iostream>
 #include <cmath>
-#include <array>
 #include <chrono>
-#include <signal.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -12,7 +10,7 @@ int main()
 {
     // Setup variables
     double cpu_time_used;
-    long a = 0;
+    long a;
     
     // <----------Start Timer---------->
     auto start = std::chrono::high_resolution_clock::now();
@@ -23,6 +21,8 @@ int main()
     // <-----------Stop Timer----------->
     
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+    std::cout << "Number of tasks: " << NUM_TASKS << std::endl;
+    std::cout << "Number of iterations: " << N << std::endl;
     std::cout << "Time taken by function: " << duration.count() << " mili-seconds" << std::endl;
     std::cout << "a = " << a << std::endl;
 
