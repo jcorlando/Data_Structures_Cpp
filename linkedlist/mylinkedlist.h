@@ -9,7 +9,22 @@ typedef struct node
 } node;
 
 
+void append_list()
+{
+    ;
+}
 
+
+int list_length(struct node* head)
+{
+    return 45;
+}
+
+
+void initialize_list()
+{
+    ;
+}
 
 
 
