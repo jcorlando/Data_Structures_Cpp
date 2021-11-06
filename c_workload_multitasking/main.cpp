@@ -12,17 +12,19 @@ int main()
 {
     // Setup variables
     double cpu_time_used;
+    long a = 0;
     
     // <----------Start Timer---------->
     auto start = std::chrono::high_resolution_clock::now();
     // <----------Start Timer---------->
-    WORKLOAD();
+    WORKLOAD(a);
     // <-----------Stop Timer----------->
     auto stop = std::chrono::high_resolution_clock::now();
     // <-----------Stop Timer----------->
     
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
     std::cout << "Time taken by function: " << duration.count() << " mili-seconds" << std::endl;
+    std::cout << "a = " << a << std::endl;
 
     return 0;
 }

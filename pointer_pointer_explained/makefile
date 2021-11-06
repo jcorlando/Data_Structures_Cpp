@@ -1,7 +1,7 @@
 CFLAGS =
 LDFLAGS =
 
-main: main.c mylinkedlist.h
+main: main.c
 	gcc $(CFLAGS) -o main main.c $(LDFLAGS)
 
 .PHONY: run clean

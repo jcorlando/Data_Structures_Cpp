@@ -2,10 +2,10 @@
 #define WORKLOAD_H
 
 // My Macros
-#define NUM_TASKS 8     // <- Number of tasks you want to create
+#define NUM_TASKS 2     // <- Number of tasks you want to create
 #define N 100000000     // <- 100000000, 1000000000, 10000000000
 
-void WORKLOAD()
+void WORKLOAD(long &a)
 {
     // Fork first process and get parent process ID
     pid_t pid = fork();
@@ -21,10 +21,15 @@ void WORKLOAD()
     }
 
 
+
     for (uint i = 0; i < (N/NUM_TASKS); i++)
     {
-        ;
+        a += 1;
     }
+
+
+    
+
     
 
     // wait for all child processes to finish and Kill all child processes
