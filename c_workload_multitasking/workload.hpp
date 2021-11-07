@@ -2,7 +2,7 @@
 #define WORKLOAD_H
 
 // My Macros
-#define NUM_TASKS 2     // <- Number of tasks you want to create
+#define NUM_TASKS 8     // <- Number of tasks you want to create
 #define N 10000000000   // <- 100000000, 1000000000, 10000000000
 
 void WORKLOAD(long &a)
@@ -11,13 +11,14 @@ void WORKLOAD(long &a)
     // track of each process ID number #
     uint my_pid_counter = 0;
 
-    // Intermediate value to
-    // accumulate running sum
+    // Intermediate temp variable
+    // to accumulate running sum
     long temp;
 
 
     // Create some file descriptors
     int fd[NUM_TASKS][2];
+
 
     // Create some pipes
     for (uint i = 0; i < NUM_TASKS; i++)  pipe(fd[i]);
@@ -68,6 +69,7 @@ void WORKLOAD(long &a)
 
 
         // Read from pipes / file descriptor
+        // start from 1 instead of 0 to skip 1st process
         for (uint i = 1; i < NUM_TASKS; i++)
         {
             if(my_pid_counter == 0)

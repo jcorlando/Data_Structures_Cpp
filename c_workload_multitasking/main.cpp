@@ -7,8 +7,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
-
 #include "workload.hpp"
+#include "workload2.hpp"
 
 int main()
 {
@@ -20,6 +20,7 @@ int main()
     auto start = std::chrono::high_resolution_clock::now();
     // <----------Start Timer---------->
     WORKLOAD(a);
+    
     // <-----------Stop Timer----------->
     auto stop = std::chrono::high_resolution_clock::now();
     // <-----------Stop Timer----------->
