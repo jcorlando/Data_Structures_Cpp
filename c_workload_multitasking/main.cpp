@@ -7,13 +7,14 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+
 #include "workload.hpp"
 
 int main()
 {
     // Setup variables
     double cpu_time_used;
-    long a;
+    long a = 0;
     
     // <----------Start Timer---------->
     auto start = std::chrono::high_resolution_clock::now();
