@@ -90,9 +90,12 @@ void WORKLOAD_2(long &a)
 
 
 
-
+        // Restart program
         // Restart with popen()
-        // a = 0;
+        a = 0;
+
+        ;
+
 
         
 
