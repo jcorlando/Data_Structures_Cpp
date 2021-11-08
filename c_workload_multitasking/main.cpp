@@ -7,6 +7,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+
+// My Macros
+#define NUM_TASKS 4     // <- Number of tasks you want to create
+#define N 10000000000   // <- 100000000, 1000000000, 10000000000
+
+// My includes
 #include "workload.hpp"
 #include "workload2.hpp"
 
@@ -19,8 +25,8 @@ int main()
     // <----------Start Timer---------->
     auto start = std::chrono::high_resolution_clock::now();
     // <----------Start Timer---------->
-    WORKLOAD(a);
-    
+    // WORKLOAD(a);    //<--- This is using file descriptors and pipes
+    WORKLOAD_2(a);  //<--- This is using popen() and fscanf()
     // <-----------Stop Timer----------->
     auto stop = std::chrono::high_resolution_clock::now();
     // <-----------Stop Timer----------->

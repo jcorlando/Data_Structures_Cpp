@@ -1,10 +1,6 @@
 #ifndef WORKLOAD_H
 #define WORKLOAD_H
 
-// My Macros
-#define NUM_TASKS 8     // <- Number of tasks you want to create
-#define N 10000000000   // <- 100000000, 1000000000, 10000000000
-
 void WORKLOAD(long &a)
 {
     // Create my own PID counter to keep
@@ -56,7 +52,7 @@ void WORKLOAD(long &a)
         // Write to pipes / file descriptor
         for (uint i = 0; i < NUM_TASKS; i++)
         {
-            if(my_pid_counter != 0)
+            if(my_pid_counter != 0) // <-- If child process
             {
                 close(fd[i][0]);
                 write(fd[i][1], &a, sizeof(long));
@@ -72,7 +68,7 @@ void WORKLOAD(long &a)
         // start from 1 instead of 0 to skip 1st process
         for (uint i = 1; i < NUM_TASKS; i++)
         {
-            if(my_pid_counter == 0)
+            if(my_pid_counter == 0) // <-- If parent process
             {
                 read(fd[i][0], &temp, sizeof(long));
                 a = a + temp;
