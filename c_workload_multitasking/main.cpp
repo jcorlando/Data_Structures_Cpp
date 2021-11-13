@@ -9,7 +9,7 @@
 #include <errno.h>
 
 // My Macros
-#define NUM_TASKS 4     // <- Number of tasks you want to create
+#define NUM_TASKS 2     // <- Number of tasks you want to create
 #define N 100000000     // <- 100000000, 1000000000, 10000000000
 
 // My includes
