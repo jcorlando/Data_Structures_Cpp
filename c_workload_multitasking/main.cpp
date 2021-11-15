@@ -30,12 +30,19 @@ int main()
     // <-----------Stop Timer----------->
     auto stop = std::chrono::high_resolution_clock::now();
     // <-----------Stop Timer----------->
-    
+
+    // <-----------Calculate Time----------->
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-    std::cout << "Number of tasks: " << NUM_TASKS << std::endl;
-    std::cout << "Number of iterations: " << N << std::endl;
-    std::cout << "Time taken by function: " << duration.count() << " mili-seconds" << std::endl;
-    std::cout << "a = " << a << std::endl;
+    // <-----------Calculate Time----------->
+
+    // std::cout << "Number of tasks: " << NUM_TASKS << std::endl;
+    // std::cout << "Number of iterations: " << N << std::endl;
+    // std::cout << "Time taken by function: " << duration.count() << " mili-seconds" << std::endl;
+    // std::cout << "a = " << a << std::endl;
+
+    // v Below here is for 2nd implementation
+    std::cout << a << std::endl;
+    // v Below here is for 2nd implementation
 
     return 0;
 }
