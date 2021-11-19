@@ -9,30 +9,44 @@
 #include <errno.h>
 
 // My Macros
-#define NUM_TASKS 2     // <- Number of tasks you want to create
+#define NUM_TASKS 4     // <- Number of tasks you want to create
 #define N 100000000     // <- 100000000, 1000000000, 10000000000
 
 // My includes
 #include "workload.hpp"
 #include "workload2.hpp"
 
-int main()
+int main(int argc, char *argv[])
 {
     // Setup variables
     double cpu_time_used;
-    long a = 0;
+    long a;
+
+
+    // v Below here is for 2nd implementation
+    if( argc == 2 )
+    {
+        std::cin >> a;
+        WORKLOAD_2(a);  //<--- This is using popen() and fscanf()
+    }
+    else
+    {
+        a = 0;
+        WORKLOAD_2(a);  //<--- This is using popen() and fscanf()
+    }
+    // ^ Above here is for 2nd implementation
+    
     
     // <----------Start Timer---------->
-    auto start = std::chrono::high_resolution_clock::now();
+    // auto start = std::chrono::high_resolution_clock::now();
     // <----------Start Timer---------->
     // WORKLOAD(a);    //<--- This is using file descriptors and pipes
-    WORKLOAD_2(a);  //<--- This is using popen() and fscanf()
     // <-----------Stop Timer----------->
-    auto stop = std::chrono::high_resolution_clock::now();
+    // auto stop = std::chrono::high_resolution_clock::now();
     // <-----------Stop Timer----------->
 
     // <-----------Calculate Time----------->
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
     // <-----------Calculate Time----------->
 
     // std::cout << "Number of tasks: " << NUM_TASKS << std::endl;
@@ -42,7 +56,7 @@ int main()
 
     // v Below here is for 2nd implementation
     std::cout << a << std::endl;
-    // v Below here is for 2nd implementation
+    // ^ Above here is for 2nd implementation
 
     return 0;
 }
