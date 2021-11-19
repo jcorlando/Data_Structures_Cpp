@@ -9,7 +9,7 @@
 #include <errno.h>
 
 // My Macros
-#define NUM_TASKS 4     // <- Number of tasks you want to create
+#define NUM_TASKS 8     // <- Number of tasks you want to create
 #define N 100000000     // <- 100000000, 1000000000, 10000000000
 
 // My includes
@@ -22,19 +22,37 @@ int main(int argc, char *argv[])
     double cpu_time_used;
     long a;
 
-
+    // <------------------------------------>
     // v Below here is for 2nd implementation
     if( argc == 2 )
     {
-        std::cin >> a;
+        std::cout << "Hello World!";
         WORKLOAD_2(a);  //<--- This is using popen() and fscanf()
     }
     else
     {
         a = 0;
-        WORKLOAD_2(a);  //<--- This is using popen() and fscanf()
+
+        FILE *fp[NUM_TASKS];
+        char path[128];
+
+        for( uint i = 0; i < (NUM_TASKS - 1); i++ )
+        {
+            fp[i] = popen("./main child", "r");
+        }
+        
+        WORKLOAD_2(a);  //<--- This is using popen()
+
+        for( uint i = 0; i < (NUM_TASKS - 1); i++ )
+        {
+            while( fgets(path, 128, fp[i]) != NULL )
+                std::cout << path << std::endl;
+        }
+
     }
     // ^ Above here is for 2nd implementation
+    // <------------------------------------>
+
     
     
     // <----------Start Timer---------->
@@ -53,10 +71,6 @@ int main(int argc, char *argv[])
     // std::cout << "Number of iterations: " << N << std::endl;
     // std::cout << "Time taken by function: " << duration.count() << " mili-seconds" << std::endl;
     // std::cout << "a = " << a << std::endl;
-
-    // v Below here is for 2nd implementation
-    std::cout << a << std::endl;
-    // ^ Above here is for 2nd implementation
 
     return 0;
 }
