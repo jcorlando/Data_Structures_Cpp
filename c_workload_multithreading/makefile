@@ -1,8 +1,8 @@
-CFLAGS = -g -pthread
-LDFLAGS = 
+CFLAGS = -std=c++17
+LDFLAGS = -lm
 
-main: main.cpp 
-	gcc $(CFLAGS) -o main main.cpp $(LDFLAGS)
+main: main.cpp workload.hpp
+	g++ $(CFLAGS) -o main main.cpp $(LDFLAGS)
 
 .PHONY: run clean
 
