@@ -9,7 +9,7 @@
 #include <errno.h>
 
 // My Macros
-#define NUM_TASKS 8     // <- Number of tasks you want to create
+#define NUM_TASKS 1     // <- Number of tasks you want to create
 #define N 10000000000   // <- 100000000, 1000000000, 10000000000
 
 // My includes
@@ -35,23 +35,31 @@ int main(int argc, char *argv[])
         char input_pipe[256];
 
         for( uint i = 0; i < (NUM_TASKS - 1); i++ )
-        {
             fp[i] = popen("./main child", "r");
-        }
         
+
+        // <----------Start Timer---------->
+        auto start = std::chrono::high_resolution_clock::now();
+        // <----------Start Timer---------->
         WORKLOAD_2(a); //<--- This is using popen()
+
 
         for( uint i = 0; i < (NUM_TASKS - 1); i++ )
         {
             while( fgets(input_pipe, 256, fp[i]) != NULL )
-            {
-                std::cout << a << std::endl;
                 a += std::atol(input_pipe);
-            }
         }
+        // <-----------Stop Timer----------->
+        auto stop = std::chrono::high_resolution_clock::now();
+        // <-----------Stop Timer----------->
 
-        std::cout << a << std::endl;
-        
+        // <-----------Calculate Time----------->
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+        // <-----------Calculate Time----------->
+        std::cout << "Number of tasks: " << NUM_TASKS << std::endl;
+        std::cout << "Number of iterations: " << N << std::endl;
+        std::cout << "Time taken by function: " << duration.count() << " mili-seconds" << std::endl;
+        std::cout << "a = " << a << std::endl;
     }
     // ^ Above here is for 2nd implementation
     // <------------------------------------>
