@@ -1,25 +1,29 @@
 #include <iostream>
 
 
-void myfunction(int param)
+void factorize(int num)
 {
 	int i = 2;
-	int j, k;
+	int j;
+	int k;
 
-	while(i < param)
+	while(i < num)
 	{
 		k = i;
-		
+
 		for (j = 2; j <= k; j++)
 		{
 			if (k % j == 0)
 			{
+
 				k = k/j;
 				j--;
+
 				if (k == 1)
 				{
 					break;
 				}
+
 			}
 		}
 		i++;
@@ -29,6 +33,6 @@ void myfunction(int param)
 
 int main()
 {
-	std::cout << "Hello World!" << std::endl;
+	
 	return 0;
 }
