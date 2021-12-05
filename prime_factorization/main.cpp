@@ -1,13 +1,34 @@
 #include <iostream>
-#include <chrono>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <pthread.h>
+
+
+void myfunction(int param)
+{
+	int i = 2;
+	int j, k;
+
+	while(i < param)
+	{
+		k = i;
+		
+		for (j = 2; j <= k; j++)
+		{
+			if (k % j == 0)
+			{
+				k = k/j;
+				j--;
+				if (k == 1)
+				{
+					break;
+				}
+			}
+		}
+		i++;
+	}
+}
 
 
 int main()
 {
-    
-    return 0;
+	std::cout << "Hello World!" << std::endl;
+	return 0;
 }
