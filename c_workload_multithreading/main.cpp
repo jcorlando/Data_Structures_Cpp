@@ -6,7 +6,7 @@
 #include <pthread.h>
 
 // My Macros
-#define NUM_THREADS 8   // <- Number of threads you want to create
+#define NUM_THREADS 2   // <- Number of threads you want to create
 #define N 10000000000   // <- 100000000, 1000000000, 10000000000
 
 // Global variables for
