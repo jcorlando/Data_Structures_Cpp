@@ -2,10 +2,16 @@
 
 openGL_tutorial_01.sln
 /*
+!/Linking
 !/openGL_tutorial_01
 /openGL_tutorial_01/*
 !/openGL_tutorial_01/src
+!/openGL_tutorial_01/glfw3.dll
 
 
 
+
+
+
+!.gitignore
 
