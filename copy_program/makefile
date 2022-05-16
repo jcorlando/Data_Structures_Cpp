@@ -1,13 +1,11 @@
-CFLAGS = -std=c++17
-LDFLAGS = -lm
+CFLAGS =
+LDFLAGS =
 
-main: main.cpp workload.hpp workload2.hpp
-	g++ $(CFLAGS) -o main main.cpp $(LDFLAGS)
+main: main.c 
+	gcc$(CFLAGS) -o my_copy main.c$(LDFLAGS)
 
 .PHONY: run clean
 
-run: main
-	clear && ./main
-
 clean:
-	rm -f main
+	rm -f my_copy 
+

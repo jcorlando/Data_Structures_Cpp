@@ -1,0 +1,9 @@
+
+
+This is just a generic text file that I will use to test the 
+
+implementation of my copy program that I will test using the "strace" 
+
+utility to view all of the system calls my copy program uses.  
+
+
