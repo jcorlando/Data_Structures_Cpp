@@ -5,31 +5,28 @@
 int main()
 {
 	char source_file[512] = ""; 
-	char dest_file[512] = "";
+	char temp[512]        = "";
+	char dest_file[512]   = "";
+
 	strcpy(source_file, "./");
-
 	printf("\nEnter the name of the source file:  ");
-	scanf("%s", dest_file);
+	scanf("%s", temp);
+	strncat( source_file, temp, 128 );
 
-	strncat( source_file, dest_file, 128 );
-
-//	if( access( source_file, F_OK ) != -1)
-//	{
-//		printf("file is found");
-//	}
-//	else
-//  {
-//		printf("file is not found");
-//		return -1;
-//  }
+	if( access( source_file, F_OK ) == -1)
+  {
+		printf("\nSource file does not exist\n");
+		return -1;
+  }
 
 	strcpy(dest_file, "./");
-
-	printf("\nThe name of the source file is           :=  %s\n", source_file);
-
 	printf("\nEnter the name of the destination file:  ");
-	scanf("%s", dest_file);
-	printf("\nThe name of the destination file is      :=  %s\n\n", dest_file);
+	scanf("%s", temp);
+	strncat( dest_file, temp, 128 );
+
+
+
+
 
 	return 0;
 }
