@@ -1,0 +1,33 @@
+
+
+** Linux tips for working with Kernel modules **
+
+
+
+** list all kernel modules that are currently loaded **
+
+lsmod
+
+
+** Load kernel modules **
+
+sudo insmod simple.ko
+
+
+** Remove kernel modules **
+
+sudo rmmod simple.ko
+
+
+
+** Clear kernel log buffer **
+
+sudo dmesg -c
+
+
+
+
+
+
+
+

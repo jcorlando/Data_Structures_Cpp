@@ -7,6 +7,7 @@
 static int simple_init(void)
 {
 	printk(KERN_INFO "Loading Module\n");
+	printk(KERN_INFO "%%llu∖n", GOLDEN_RATIO_PRIME);
 	return 0;
 }
 
