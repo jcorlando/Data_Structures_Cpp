@@ -1,12 +1,15 @@
 
-
 ** Linux tips for working with Kernel modules **
-
 
 
 ** list all kernel modules that are currently loaded **
 
 lsmod
+
+
+** Check the contents of messages in the kernel log buffer **
+
+dmesg
 
 
 ** Load kernel modules **
@@ -16,18 +19,10 @@ sudo insmod simple.ko
 
 ** Remove kernel modules **
 
-sudo rmmod simple.ko
-
+sudo rmmod simple
 
 
 ** Clear kernel log buffer **
 
 sudo dmesg -c
-
-
-
-
-
-
-
 
