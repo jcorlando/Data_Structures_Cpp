@@ -1,0 +1,16 @@
+
+
+
+*.cmd
+*.symvers
+*.order
+simple.ko
+simple.mod
+simple.mod.c
+simple.mod.o
+simple.o
+
+
+
+
+
