@@ -4,11 +4,11 @@
 *.cmd
 *.symvers
 *.order
-hello.ko
-hello.mod
-hello.mod.c
-hello.mod.o
-hello.o
+seconds.ko
+seconds.mod
+seconds.mod.c
+seconds.mod.o
+seconds.o
 
 
 

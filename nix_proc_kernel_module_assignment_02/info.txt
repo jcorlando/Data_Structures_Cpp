@@ -1,0 +1,35 @@
+
+** Linux tips for working with Kernel modules **
+**       And some assignment extras           **
+
+
+
+** list all kernel modules that are currently loaded **
+
+lsmod
+
+
+** Check the contents of messages in the kernel log buffer **
+
+dmesg
+
+
+** Load kernel modules **
+
+sudo insmod seconds.ko
+
+
+** Report the current value of jiffies when proc file is read  **
+
+cat /proc/seconds
+
+
+** Remove kernel modules **
+
+sudo rmmod seconds
+
+
+** Clear kernel log buffer **
+
+sudo dmesg -c
+
