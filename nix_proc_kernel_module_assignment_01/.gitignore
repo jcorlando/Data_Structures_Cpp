@@ -4,11 +4,11 @@
 *.cmd
 *.symvers
 *.order
-assignmentone.ko
-assignmentone.mod
-assignmentone.mod.c
-assignmentone.mod.o
-assignmentone.o
+jiffies.ko
+jiffies.mod
+jiffies.mod.c
+jiffies.mod.o
+jiffies.o
 
 
 

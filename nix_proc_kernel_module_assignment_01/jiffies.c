@@ -44,7 +44,7 @@ static ssize_t proc_read(struct file *file, char __user *usr_buf, size_t count, 
 	int rv = 0;
 	char buffer[BUFFER_SIZE];
 	static int completed = 0;
-	unsigned long copyReturnValue; //<-- This value is unused and only used to silence warnings
+	unsigned long copyReturnValue; //<-- This variable is unused and only used to silence compiler warnings
 
 	if (completed)
 	{
@@ -54,7 +54,7 @@ static ssize_t proc_read(struct file *file, char __user *usr_buf, size_t count, 
 	
 	completed = 1;
 
-	rv = sprintf(buffer, "Hello World\n");
+	rv = sprintf(buffer, "The current value of jiffies right now is :  \n");
 	
 	copyReturnValue = copy_to_user(usr_buf, buffer, rv);
 
@@ -65,5 +65,5 @@ module_init( proc_init );
 module_exit( proc_exit );
 
 MODULE_LICENSE("GPL");
-MODULE_DESCRIPTION("Hello Module");
+MODULE_DESCRIPTION("Hello jiffies");
 

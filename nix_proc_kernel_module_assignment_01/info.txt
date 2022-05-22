@@ -1,5 +1,7 @@
 
 ** Linux tips for working with Kernel modules **
+**       And some assignment extras           **
+
 
 
 ** list all kernel modules that are currently loaded **
@@ -14,12 +16,17 @@ dmesg
 
 ** Load kernel modules **
 
-sudo insmod assignmentone.ko
+sudo insmod jiffies.ko
+
+
+** Report the current value of jiffies when proc file is read  **
+
+cat /proc/jiffies
 
 
 ** Remove kernel modules **
 
-sudo rmmod assignmentone
+sudo rmmod jiffies
 
 
 ** Clear kernel log buffer **
