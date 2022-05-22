@@ -1,0 +1,16 @@
+
+
+
+*.cmd
+*.symvers
+*.order
+assignmentone.ko
+assignmentone.mod
+assignmentone.mod.c
+assignmentone.mod.o
+assignmentone.o
+
+
+
+
+
