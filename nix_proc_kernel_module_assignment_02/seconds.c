@@ -17,6 +17,9 @@
 // HZ rate. When a user enters the command your kernel module will report the number of seconds that have elapsed
 // since the kernel module was first loaded. Be sure to remove /proc/seconds when the module is removed.
 
+
+
+// Global Variables and Function Prototypes
 static ssize_t proc_read(struct file *file, char *buf, size_t count, loff_t *pos);
 
 static struct proc_ops my_fops =
@@ -24,9 +27,14 @@ static struct proc_ops my_fops =
 	.proc_read = proc_read,
 };
 
+static unsigned long init_jiffies; //<--- Initial values of jiffies
 
+
+
+// Module Logic Starts here
 static int proc_init(void)
 {
+	init_jiffies = jiffies;
 	proc_create(PROC_NAME, 0, NULL, &my_fops);
 	printk(KERN_INFO "/proc/%s created\n", PROC_NAME);
 
@@ -40,12 +48,14 @@ static void proc_exit(void)
 }
 
 
+
 static ssize_t proc_read(struct file *file, char __user *usr_buf, size_t count, loff_t *pos)
 {
 	int rv = 0;
 	char buffer[BUFFER_SIZE];
 	static int completed = 0;
-	unsigned long copyReturnValue; //<-- This variable is unused and only used to silence compiler warnings
+	static unsigned long delta_jiffies;  //<-- Difference in initial startup jiffies and current jiffies
+	static unsigned long copyReturnValue; //<-- This variable is unused and only used to silence compiler warnings
 
 	if (completed)
 	{
@@ -55,10 +65,11 @@ static ssize_t proc_read(struct file *file, char __user *usr_buf, size_t count, 
 	
 	completed = 1;
 
-	// Goodbye World!
-	
 
-	rv = sprintf(buffer, "The number of elapsed seconds since the kernel module was loaded is : %i\n", HZ);
+	// Compute Seconds that have passed
+	delta_jiffies = jiffies - init_jiffies;
+	
+	rv = sprintf( buffer, "The number of elapsed seconds since the kernel module was loaded is equal to  ==  %lu\n", (delta_jiffies / HZ) );
 	
 	copyReturnValue = copy_to_user(usr_buf, buffer, rv);
 
