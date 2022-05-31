@@ -6,3 +6,4 @@
   - `libeigen3-doc`
 #### To compile Eigen library use this command:
 - `g++ -I /usr/include/eigen3/ main.cpp -o main`
+- Or just use the included makefile.
