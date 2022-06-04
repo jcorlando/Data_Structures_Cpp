@@ -39,11 +39,42 @@ int main()
                  0, 8, 0,
                  0, 0, 4;
 
+
+    // Print out my initialized matrix
     std::cout << "\nmy_matrix  ==  \n\n" << my_matrix << std::endl << std::endl;
 
 
+    // Accessing specified elements of a matrix
+    std::cout << "my_matrix[0, 0]  ==   " << my_matrix(0, 0) << std::endl << std::endl;
+    std::cout << "my_matrix[1, 1]  ==   " << my_matrix(1, 1) << std::endl << std::endl;
+    std::cout << "my_matrix[2, 2]  ==   " << my_matrix(2, 2) << std::endl << std::endl;
+    std::cout << "my_matrix[0, 1]  ==   " << my_matrix(0, 1) << std::endl << std::endl;
+    std::cout << "my_matrix[0, 2]  ==   " << my_matrix(0, 2) << std::endl << std::endl;
 
-    
+
+    // Assign a value to an element
+    std::cout << "\nchanging value my_matrix[0, 2]  =  3" << std::endl;
+    my_matrix(0, 2) = 3;
+    std::cout << "\nNow my_matrix  ==  \n\n" << my_matrix << std::endl << std::endl;
+
+    // Transpose of matrix
+    std::cout << "This is the Transpose of my_matrix^T\n\n" << my_matrix.transpose() << std::endl << std::endl;
+
+    // Access a Column vector
+    std::cout << "To access a Column vector at index[0] use my_matrix.col(0)  ==   \n\n" << my_matrix.col(0) << std::endl << std::endl;
+    std::cout << "To access a Column vector at index[1] use my_matrix.col(1)  ==   \n\n" << my_matrix.col(1) << std::endl << std::endl;
+    std::cout << "To access a Column vector at index[2] use my_matrix.col(2)  ==   \n\n" << my_matrix.col(2) << std::endl << std::endl;
+
+    // Access a Row vector
+    std::cout << "To access a Row vector at index[0] use my_matrix.row(0)  ==   \n\n" << my_matrix.row(0) << std::endl << std::endl;
+    std::cout << "To access a Row vector at index[1] use my_matrix.row(1)  ==   \n\n" << my_matrix.row(1) << std::endl << std::endl;
+    std::cout << "To access a Row vector at index[2] use my_matrix.row(2)  ==   \n\n" << my_matrix.row(2) << std::endl << std::endl;
+
+    // Access a single element of Column vector
+    std::cout << "\nTo access a single element of the Column vector at index[1][1] use my_matrix.col(1)[1]  ==   \n\n" << my_matrix.col(1)[1] << std::endl << std::endl;
+
+    // Access a single element Row vector
+    std::cout << "To access a single element of the Row vector at index[2][2] use my_matrix.row(2)[2]  ==   \n\n" << my_matrix.row(2)[2] << std::endl << std::endl;
 
     return 0;
 }
