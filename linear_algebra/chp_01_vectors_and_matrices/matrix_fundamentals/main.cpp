@@ -76,5 +76,15 @@ int main()
     // Access a single element Row vector
     std::cout << "To access a single element of the Row vector at index[2][2] use my_matrix.row(2)[2]  ==   \n\n" << my_matrix.row(2)[2] << std::endl << std::endl;
 
+    // How to create a matrix from vectors
+    Eigen::Matrix<double, 3, 2> my_new_matrix;
+    my_new_matrix.col(0) = my_matrix.col(0);
+    my_new_matrix.col(1) = my_matrix.col(1);
+
+    std::cout << "\nHere I have created a new matrix using the first two cloumns of the previous matrix  : " << std::endl;
+    std::cout << "\nmy_new_matrix  ==  \n\n" << my_new_matrix << std::endl << std::endl;
+
+
+
     return 0;
 }
