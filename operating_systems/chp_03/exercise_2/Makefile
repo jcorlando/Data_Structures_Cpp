@@ -1,13 +1,13 @@
 CFLAGS =
 LDFLAGS =
 
-main: main.c
-	gcc$(CFLAGS) main.c -o main$(LDFLAGS)
+time: time.c
+	gcc$(CFLAGS) time.c -o time$(LDFLAGS)
 
 .PHONY: run clean
 
-run: main
-	./main
+run: time
+	./time
 
 clean:
-	rm -f main
+	rm -f time
