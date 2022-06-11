@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 /*
 *  Assignment : #2
@@ -10,7 +10,14 @@
 *  and will report the amount of elapsed time to run the specified command. This will involve
 *  using fork() and exec() functions, as well as the gettimeofday() function to determine
 *  the elapsed time. It will also require the use of two different IPC mechanisms.
-* -----------------------------------------------------------------------------------------------
+* -----------------------------------------------------------------------------------------------------
+*  The general strategy is to fork a child process that will execute the specified command.
+*  However, before the child executes the command, it will record a timestamp of the current
+*  time (which we term "starting time"). The parent process will wait for the child process to
+*  terminate. Once the child terminates, the parent will record the current timestamp for the
+*  ending time. The difference between the starting and ending times represents the elapsed time
+*  to execute the command. The example output below reports the amount of time to run the command ls:
+* -----------------------------------------------------------------------------------------------------
 *  The first version will have the child process write the starting time to a region of
 *  shared memory before it calls exec(). After the child process terminates, the parent
 *  will read the starting time from shared memory. Refer to Section POSIX shared memory
@@ -25,20 +32,26 @@ int main()
     // Used to identify each parent and child process
     int pid;
 
+    // Create timeval struct that gets the Unix Epoch time value which is
+    // accurate to the nearest microsecond but also has a range of years.
+    // Both "PARENT" and "CHILD" will have this struct in their memory
+    struct timeval current_time;
+
     // Create child process
     pid = fork();
 
-    // If parent process, print time of day
+    // If parent process print your current time
     if (pid != 0)
     {
-        struct timeval current_time;
         gettimeofday(&current_time, NULL);
-        printf("\nseconds : %ld\nmicro seconds : %ld", current_time.tv_sec, current_time.tv_usec);
+        printf("\nParent process : \n  seconds : %ld\n  micro seconds : %ld", current_time.tv_sec, current_time.tv_usec);
     }
-    
-    // else child process print (pid) number
-    else
-        printf("\n\nI am the child process & my process id number is : %d \n\n", (int)getpid());
+    // else child process print your current time
+    else 
+    {
+        gettimeofday(&current_time, NULL);
+        printf("\nChild process : \n  seconds : %ld\n  micro seconds : %ld\n\n", current_time.tv_sec, current_time.tv_usec);
+    }
     
     
     return 0;
