@@ -1,7 +1,11 @@
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/time.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
+#include <sys/wait.h>
+#include <sys/time.h>
+#include <sys/shm.h>
+
 
 /*
 *  Assignment : #2
@@ -27,30 +31,35 @@
 *  both the parent and child processes access to the region of shared memory.
 */
 
-int main()
+int main(int argc, char **argv)
 {
-    // Used to identify each parent and child process
-    int pid;
-
     // Create timeval struct that gets the Unix Epoch time value which is
     // accurate to the nearest microsecond but also has a range of years.
     // Both "PARENT" and "CHILD" will have this struct in their memory
     struct timeval current_time;
 
-    // Create child process
-    pid = fork();
+    // Create child process and identify each
+    // parent and child process with their unique pid
+    pid_t pid = fork();
 
-    // If parent process print your current time
-    if (pid != 0)
-    {
-        gettimeofday(&current_time, NULL);
-        printf("\nParent process : \n  seconds : %ld\n  micro seconds : %ld", current_time.tv_sec, current_time.tv_usec);
-    }
-    // else child process print your current time
-    else 
+    // If "CHILD" process
+    if (pid == 0)
     {
         gettimeofday(&current_time, NULL);
         printf("\nChild process : \n  seconds : %ld\n  micro seconds : %ld\n\n", current_time.tv_sec, current_time.tv_usec);
+
+
+        // char *binaryPath = "/bin/ls";
+        // char *args[] = {binaryPath, "-lh", "/home", NULL};
+        // execv(binaryPath, args);
+        exit(17);
+    }
+    // else "PARENT" process
+    else
+    {
+        int child_status;
+        waitpid(pid, &child_status, 0);
+        printf("\nI will always wait for the child to finish before printing...\n\n");
     }
     
     
