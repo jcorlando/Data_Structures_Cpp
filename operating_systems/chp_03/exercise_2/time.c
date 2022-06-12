@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/time.h>
-#include <sys/shm.h>
+#include <sys/mman.h>
 
 
 /*
@@ -38,6 +37,15 @@ int main(int argc, char **argv)
     // Both "PARENT" and "CHILD" will have this struct in their memory
     struct timeval current_time;
 
+    /* the size (in bytes) of shared memory object */
+    const int SIZE = 1024;
+
+
+    // Create a shared memory region.  Since this a simple cloned process there is no need for anything
+    // fancy like using file descriptors.  The shared memory is shared between both processes.
+    struct timeval* shared_memory = mmap(NULL, SIZE, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+
+
     // Create child process and identify each
     // parent and child process with their unique pid
     pid_t pid = fork();
@@ -45,23 +53,22 @@ int main(int argc, char **argv)
     // If "CHILD" process
     if (pid == 0)
     {
+        /* write to the shared memory object */
         gettimeofday(&current_time, NULL);
-        printf("\nChild process : \n  seconds : %ld\n  micro seconds : %ld\n\n", current_time.tv_sec, current_time.tv_usec);
 
+        *shared_memory = current_time;
 
-        // char *binaryPath = "/bin/ls";
-        // char *args[] = {binaryPath, "-lh", "/home", NULL};
-        // execv(binaryPath, args);
-        exit(17);
+        exit(EXIT_SUCCESS);
     }
     // else "PARENT" process
     else
     {
+        // Wait for "CHILD" process to finish
         int child_status;
         waitpid(pid, &child_status, 0);
-        printf("\nI will always wait for the child to finish before printing...\n\n");
+
+        printf("\nseconds : %ld\nmicro seconds : %ld\n\n", shared_memory->tv_sec, shared_memory->tv_usec);
     }
-    
-    
-    return 0;
+
+    return EXIT_SUCCESS;
 }
