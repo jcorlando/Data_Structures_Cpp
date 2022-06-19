@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     // Create timeval struct that gets the Unix Epoch time value which is
     // accurate to the nearest microsecond but also has a range of years.
     // Both "PARENT" and "CHILD" will have this struct in their memory
-    struct timeval current;
+    struct timeval start, end;
 
     // Create file descriptors
     int fd[2];
@@ -56,38 +56,48 @@ int main(int argc, char **argv)
     // If "CHILD" process
     if (pid == 0)
     {
-        printf("\nHello from Child!!!\n");
-
         // Close read-end "fd[0]" of "CHILD" pipe
         close(fd[0]);
 
         // Set the start timer
-        gettimeofday(&current, NULL);
+        gettimeofday(&start, NULL);
+
+        // Write to the start time to the "PIPE"
+        write(fd[1], &start, sizeof(start));
+
+        // Close the write-end of the pipe in the CHILD
+        // process effectively closing the pipe entirely
+        close(fd[1]);
 
         // execute 1st argument of command line with the included parameters
-        // execlp(argv[1], argv[1], argv[2], NULL);
-
-        
+        execlp(argv[1], argv[1], argv[2], NULL);
 
         exit(EXIT_SUCCESS);
     }
     // else "PARENT" process
     else
     {
+        // Close the write-end of the pipe in the PARENT process
+        close(fd[1]);
 
-
-
-
-
-
-
-
+        // Read from the pipe
+        read(fd[0], &start, sizeof(start));
 
         // Wait for "CHILD" process to **FINISH**
         int child_status;
         waitpid(pid, &child_status, 0);
 
-        printf("\nHello from Parent!!!\n\n");
+        // Stop the timer
+        gettimeofday(&end, NULL);
+
+        // Close the read-end "fd[0]" of the pipe in the
+        // PARENT process effectively closing it entirely
+        close(fd[0]);
+
+        long delta_seconds = end.tv_sec - start.tv_sec;
+        long delta_usecs = end.tv_usec - start.tv_usec;
+
+        printf("\n Amount of elapsed time taken to execute program was : \n   seconds : %ld\n   micro-seconds : %ld\n\n", delta_seconds, delta_usecs);
     }
 
     return EXIT_SUCCESS;
