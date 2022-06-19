@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/time.h>
+#include <sys/mman.h>
 
 
 /*
@@ -20,34 +21,29 @@
 *  ending time. The difference between the starting and ending times represents the elapsed time
 *  to execute the command. The example output below reports the amount of time to run the command ls:
 * -----------------------------------------------------------------------------------------------------
-*  The second version will use a pipe. The child will write the starting time to the pipe, and the
-*  parent will read from it following the termination of the child process.  You will use the
-*  gettimeofday() function to record the current timestamp. This function is passed a pointer to a
-*  struct timeval object, which contains two members: tv_sec and t_usec. These represent the number of
-*  elapsed seconds and microseconds since January 1, 1970 (known as the UNIX EPOCH).  For IPC between
-*  the child and parent processes, the contents of the shared memory pointer can be assigned the struct
-*  timeval representing the starting time. When pipes are used, a pointer to a struct timeval can be
-*  written to—and read from—the pipe.
+*  The first version will have the child process write the starting time to a region of
+*  shared memory before it calls exec(). After the child process terminates, the parent
+*  will read the starting time from shared memory. Refer to Section POSIX shared memory
+*  for details using POSIX shared memory. In that section, there are separate programs for
+*  the producer and consumer. As the solution to this problem requires only a single program,
+*  the region of shared memory can be established before the child process is forked, allowing
+*  both the parent and child processes access to the region of shared memory.
 */
 
 
-// This implementation below uses pipes
+// This implementation below uses shared memory
 int main(int argc, char **argv)
 {
     // Create timeval struct that gets the Unix Epoch time value which is
     // accurate to the nearest microsecond but also has a range of years.
     // Both "PARENT" and "CHILD" will have this struct in their memory
-    struct timeval current;
+    struct timeval start, end;
 
-    // Create file descriptors
-    int fd[2];
 
-    // Create pipe and error check
-    if (pipe(fd) == -1)
-    {
-        printf("\nAn error has ocurred with opening the pipen\n\n");
-        return(EXIT_FAILURE);
-    }
+    // Create a shared memory region.  Since this a simple cloned process there is no need for anything
+    // fancy like using file descriptors.  The shared memory is shared between both processes.
+    struct timeval* shared_memory_time = mmap(NULL, sizeof(struct timeval), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+
 
     // Create child process and identify each
     // parent and child process with their unique pid
@@ -56,38 +52,35 @@ int main(int argc, char **argv)
     // If "CHILD" process
     if (pid == 0)
     {
-        printf("\nHello from Child!!!\n");
-
-        // Close read-end "fd[0]" of "CHILD" pipe
-        close(fd[0]);
-
         // Set the start timer
-        gettimeofday(&current, NULL);
+        gettimeofday(&start, NULL);
+
+        /* write to the shared memory object */
+        // Write the current time to shared memory
+        *shared_memory_time = start;
 
         // execute 1st argument of command line with the included parameters
-        // execlp(argv[1], argv[1], argv[2], NULL);
-
-        
+        execlp(argv[1], argv[1], argv[2], NULL);
 
         exit(EXIT_SUCCESS);
     }
     // else "PARENT" process
     else
     {
-
-
-
-
-
-
-
-
-
         // Wait for "CHILD" process to **FINISH**
         int child_status;
         waitpid(pid, &child_status, 0);
+        
+        // Stop the timer
+        gettimeofday(&end, NULL);
 
-        printf("\nHello from Parent!!!\n\n");
+        // Get the start time from the shared memory region
+        start = *shared_memory_time;
+
+        long delta_seconds = end.tv_sec - start.tv_sec;
+        long delta_usecs = end.tv_usec - start.tv_usec;
+
+        printf("\n Amount of elapsed time taken to execute program was : \n   seconds : %ld\n   micro-seconds : %ld\n\n", delta_seconds, delta_usecs);
     }
 
     return EXIT_SUCCESS;
