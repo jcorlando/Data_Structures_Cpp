@@ -1,13 +1,13 @@
 CFLAGS =
 LDFLAGS =
 
-main: main.c
-	gcc$(CFLAGS) main.c -o main$(LDFLAGS)
+my_pid_manager: my_pid_manager.c
+	gcc$(CFLAGS) my_pid_manager.c -o my_pid_manager$(LDFLAGS)
 
 .PHONY: run clean
 
-run: main
-	./main
+run: my_pid_manager
+	./my_pid_manager
 
 clean:
-	rm -f main
+	rm -f my_pid_manager
