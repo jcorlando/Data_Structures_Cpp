@@ -6,7 +6,7 @@
 // of possible pid values:
 #define MIN_PID 300
 #define MAX_PID 5000
-#define BITS (MAX_PID - MIN_PID)
+#define BITS ( MAX_PID - MIN_PID + 1 )
 
 // Macros for defining Active and In-Active processes
 #define ACTIVE 1
@@ -30,43 +30,35 @@ int allocate_pid();
 void release_pid(int pid);
 
 
-// My header file for manipulating the bit field.
-// Functions include "Set-bit", "Check-bit"... etc.
-#include "my_pid_manager.h"
 
 int main()
 {
+    // Testing my Code...
     if ( allocate_map() == -1 )
     {
         printf("Error creating PID Bit-field");
         return EXIT_FAILURE;
     }
-
-
-
-    // implicit truncation from 'int' to bit-field changes value from 2 to 0 [-Wbit/field-constant-conversion]
-    // Above comment warnings occur if you change below right side equals values to 2 and 3 respectively
-    // Use flag -Werror to convert warnings into compile time errors.
-
-
-
     
-    // Print out entire bit-field
-    for (uint index = 0; index < BITS; index++)
-    {
-        if (index % 55 == 0) printf("\n");
+    
+    int pid;
 
-        // ----------------------Print Backwards
-        printf( "%u ", pids_bits[BITS - index - 1].bit );
-    }
-
-    printf("\n\n");
-
-
-
+    if ((pid = allocate_pid()) != -1)
+        printf("New Process Allocated Pid = %d \n", pid);
+    if ((pid = allocate_pid()) != -1)
+        printf("New Process Allocated Pid = %d \n", pid);
+    if ((pid = allocate_pid()) != -1)
+        printf("New Process Allocated Pid = %d \n", pid);
+    if ((pid = allocate_pid()) != -1)
+        printf("New Process Allocated Pid = %d \n", pid);
 
 
+    printf("Now Releasing Process # %d\n", pid);
+    release_pid(pid);
 
+    if ((pid = allocate_pid()) != -1)
+        printf("New Process Allocated Pid = %d \n", pid);
+    // Finished testing...
 
     
     return EXIT_SUCCESS;
@@ -81,7 +73,7 @@ int allocate_map()
         return -1;
     
 
-    for (uint i = 0; i < MAX_PID - MIN_PID + 1; i++)
+    for (uint i = 0; i < BITS; i++)
     {
         pids_bits[i].bit = INACTIVE;
     }
@@ -94,15 +86,25 @@ int allocate_map()
 // then assign the process an ID if there is one available.
 int allocate_pid()
 {
-    for (uint i = 0; i < BITS; i++)
+    for (uint index = 0; index < BITS; index++)
     {
-        if (1)
+        // Check if the available index has an available assignable PID
+        if( (pids_bits[index].bit) == INACTIVE )
         {
-            // pId[i].isAvailable = FALSE;
-            return MIN_PID + i;
+            pids_bits[index].bit = ACTIVE;
+            return index + MIN_PID;
         }
     }
 
     return -1;
 }
+
+
+// Process finished executing and is
+// returning the PID back to the manager
+void release_pid(int pid)
+{
+    pids_bits[pid - MIN_PID].bit = INACTIVE;
+}
+
 
