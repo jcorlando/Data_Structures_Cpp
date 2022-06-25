@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
 #include <string.h>
 
 /*
@@ -25,16 +27,42 @@
 
 int main(int argc, char **argv)
 {
-
-    if(argc != 2)
+    // Error check for only 1 command line argument passed in. 
+    if ( argc != 2 )
     {
-        if ( strcmp(argv[0], "./main") == 0 )
-            printf("Please supply only 1 Command Line argument (A positive integer only) to this program...\nThis number represents the starting iteration of the Collatz Conjecture.\n");
+        printf("Error: Please supply only 1 Command Line argument (A positive integer only) to this program...\nThis number represents the starting iteration of the Collatz Sequence.\n");
+        return EXIT_FAILURE;
+    }
+
+    // Error check for only positive integers being passed in. 
+    if ( atoi(argv[1]) < 1 )
+    {
+        printf("Error: The number you supplied is a Non-positive integer.\nPlease only input Positive Integers...\n");
         return EXIT_FAILURE;
     }
 
 
+    // Create child process and identify each
+    // parent and child process with their unique pid
+    pid_t pid = fork();
+
+
+    // If "CHILD" process
+    if (pid == 0)
+    {
+
+        exit(EXIT_SUCCESS);
+    }
+
+    // else "PARENT" process
+    else
+    {
+        // Wait for "CHILD" process to **FINISH**
+        int child_status;
+        waitpid(pid, &child_status, 0);
+    }
+
     
-    return EXIT_SUCCESS;
+    exit(EXIT_SUCCESS);
 }
 
