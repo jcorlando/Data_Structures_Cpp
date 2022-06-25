@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <ctype.h>
 
 /*
 *  The Collatz conjecture concerns what happens when we take any positive
@@ -34,6 +35,32 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
+    // Error check for only numbers (No CHAR or STRINGS)
+    // Check for negative numbers
+
+    // Create a new char array with the length of the argument
+    // array to each individual char for erroneous values
+    uint argv_len = strlen(argv[1]);
+    char number[argv_len];
+    strcpy( number, argv[1] );
+
+    uint i = 0;
+    // Set flag for if 1st "CHAR" character is a negative number "-"
+    if ( number[0] == '-' )
+        { i = 1; }
+    
+    
+    for ( ; number[i] != 0; i++ )
+    {
+        //if (number[i] > '9' || number[i] < '0')
+        if ( !isdigit(number[i]) )
+        {
+            printf("Error: The value you have supplied seems to be erroneous...\nPlease supply only 1 Command Line argument (A positive integer only) to this program...\nThis number represents the starting iteration of the Collatz Sequence.\n");
+            return EXIT_FAILURE;
+        }
+    }
+
+
     // Error check for only positive integers being passed in. 
     if ( atoi(argv[1]) < 1 )
     {
@@ -50,7 +77,25 @@ int main(int argc, char **argv)
     // If "CHILD" process
     if (pid == 0)
     {
+        u_int64_t number = atoi(argv[1]);
 
+        // Print first initial value
+        printf("%ld ", number);
+
+        while (number > 1)
+        {
+            if (number % 2 == 0) //for even numbers
+                { number = number / 2; }
+            
+            else //------------->for odd numbers
+                { number = number * 3 + 1; }
+            
+            printf("%ld ", number);
+        }
+        
+        printf("\n");
+
+        // Always use exit() in child processes
         exit(EXIT_SUCCESS);
     }
 
@@ -63,6 +108,6 @@ int main(int argc, char **argv)
     }
 
     
-    exit(EXIT_SUCCESS);
+    return EXIT_SUCCESS;
 }
 
