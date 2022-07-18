@@ -1,13 +1,13 @@
 CFLAGS = -Wpedantic -Wall -Wextra -Werror
 LDFLAGS =
 
-main: main.c
-	gcc $(CFLAGS) main.c -o main$(LDFLAGS)
+client: client.c
+	gcc $(CFLAGS) client.c -o client$(LDFLAGS)
 
 .PHONY: run clean
 
-run: main
-	./main
+run: client
+	./client
 
 clean:
-	rm -f main
+	rm -f client
