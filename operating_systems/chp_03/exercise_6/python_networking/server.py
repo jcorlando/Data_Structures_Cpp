@@ -19,7 +19,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as my_socket:
         print(f"[NEW CONNECTION] {addr} connected")
         with conn:
             print( f"Connected by {addr}" )
-            mesg_day = "Message of the Day!!"
+            mesg_day = "Be Strong\n But Not Rude\n\nBe Kind But\n Not Weak\n\nBe Humble\n But Not Timid"
             conn.sendall( mesg_day.encode() )
 
     def start():
@@ -31,7 +31,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as my_socket:
             print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
 
 
-    print( "[STARTING] server is starting" )
+    print( "\n[STARTING] server is starting" )
     start()
 
     
