@@ -19,7 +19,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as my_socket:
         print(f"[NEW CONNECTION] {addr} connected")
         with conn:
             print( f"Connected by {addr}" )
-            mesg_day = "Be Strong\n But Not Rude\n\nBe Kind But\n Not Weak\n\nBe Humble\n But Not Timid"
+            mesg_day = "Be Strong\n But Not Rude\n\nBe Kind But\n Not Weak\n\nBe Humble\n But Not Timid\n"
             conn.sendall( mesg_day.encode() )
 
     def start():

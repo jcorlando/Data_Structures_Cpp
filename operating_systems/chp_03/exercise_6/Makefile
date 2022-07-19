@@ -1,4 +1,4 @@
-CFLAGS = -Wpedantic -Wall -Wextra -Werror
+CFLAGS = -Wpedantic -Wall -Wextra
 LDFLAGS =
 
 client: client.c
