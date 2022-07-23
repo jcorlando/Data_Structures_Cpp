@@ -24,7 +24,10 @@
 
 // Client side C/C++ program to demonstrate Socket programming
 
+
+//----- Some Defined MACROS ------!!
 #define PORT 65432
+#define HEADER 64
 
 int main()
 {
@@ -72,6 +75,20 @@ int main()
     }
 
 
+
+    // Connection has been successfully established below here
+
+    // Header length in bytes
+    char msg_length[HEADER];
+
+
+    // Receive the length of the message that was sent from the server
+    recv(socket_fd, &msg_length, sizeof(msg_length), 0);
+
+    printf("Ther server sent the Message Length of : \n\n%s\n\n", msg_length);
+
+
+
     // recieve data from the server
     char server_response[1024];
 
@@ -81,7 +98,7 @@ int main()
 
     // recieved data from the server successfully then printing the data obtained from the server
 
-    printf("Ther server sent the data : \n\n%s", server_response);
+    // printf("Ther server sent the data : \n\n%s", server_response);
 
     // closing the socket
     close(socket_fd);
