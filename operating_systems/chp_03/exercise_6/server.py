@@ -13,7 +13,12 @@ PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
 #----- Other Constants -----!!
 HEADER = 64
 FORMAT = 'utf-8'
-MESG_DAY = "Be Strong\n But Not Rude\n\nBe Kind But\n Not Weak\n\nBe Humble\n But Not Timid\nUtf-8 Encoded string  ==  "
+# Always add a null terminator when sending strings through sockets or
+# else your C-Program will not know when the string has terminated.
+# MESG_DAY = "Be Strong\n But Not Rude\n\nBe Kind But\n Not Weak\n\nBe Humble\n But Not Timid\0"
+
+# These CONSTANTS below are test cases for testing
+MESG_DAY = "Be Strong\n But Not Rude\n\nBe Kind But\n Not Weak\n\nBe Humble\n But Not Timid\n\nUtf-8 Encoded string  ==  привет мир and \N{grinning face with smiling eyes}\0"
 
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
@@ -31,9 +36,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
         conn.send(send_length)
         conn.send(message)
 
-        # These are test cases below
-        # conn.send("Be Strong\n But Not Rude\n\nBe Kind But\n Not Weak\n\nBe Humble\n But Not Extra Stuff Added Here".encode(FORMAT))
-        # conn.send("Be Strong\n But Not Rude\n\nBe Kind But\n Not Weak\n\nBe Humble\n But".encode(FORMAT))
+        # These are test cases below for testing
+        # conn.send("Be Strong\n But Not Rude\n\nBe Kind But\n Not Weak\n\nBe Humble\n But Not TimidExtra Stuff Added Here\0".encode(FORMAT))
+        # conn.send("Be Strong\n But Not Rude\n\nBe Kind But\n Not Weak\n\nBe Humble\n But N\0ot".encode(FORMAT))
         
 
 
@@ -54,6 +59,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
         while True:
             #----This part is blocking -----
             ( conn, addr ) = server_socket.accept()
+            #----This part is blocking -----
             thread = threading.Thread( target=handle_client, args=(conn, addr) )
             thread.start()
             print(f"[ACTIVE CONNECTIONS] {threading.active_count() - 1}")

@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 
 
 /*
@@ -21,7 +22,6 @@
 */
 
 
-
 // Client side C/C++ program to demonstrate Socket programming
 
 
@@ -32,13 +32,13 @@
 int main()
 {
     // Create a socket
-    int socket_fd;
+    int socket_client_fd;
     // calling socket function and storing the result in the variable
     // socket( domainOfTheSocket, TypeOfTheSocket, FlagForProtocol{0 for default protocol i.e, TCP} )
     // AF_INET = constant defined in the header file for us
     // TCP vs UDP --- SOCK_STREAM for TCP
     // flag 0 for TCP (default protocol)
-    socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    socket_client_fd = socket(AF_INET, SOCK_STREAM, 0);
 
 
     // creating network connection in order to connect to the other side
@@ -61,47 +61,49 @@ int main()
 
 
     // structure within structure A.B.c
-    server_address.sin_addr.s_addr = INADDR_ANY; // INADDR_ANY is for connection with 0000
+    // INADDR_LOOPBACK is for connection with localhost (127.0.0.1)
+    // INADDR_ANY is for connection with 0000 or AKA receive any ip address
+    server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
     // connect returns us a response that connection is establlised or not
-    int connect_status = connect(socket_fd, (struct sockaddr *) &server_address, sizeof(server_address));
+    int connect_status = connect(socket_client_fd, (struct sockaddr *) &server_address, sizeof(server_address));
 
 
     // check for the error with the connection
     if (connect_status == -1)
     {
         printf("There was an error making a connection to socket\n" );
-        close(socket_fd);
+        close(socket_client_fd);
         return EXIT_FAILURE;
     }
 
-
-
     // Connection has been successfully established below here
 
+
+
     // Header length in bytes
-    char msg_length[HEADER];
+    char msg_length_header[HEADER];
 
 
-    // Receive the length of the message that was sent from the server
-    recv(socket_fd, &msg_length, sizeof(msg_length), 0);
+    // Receive the length of the message that was sent as a HEADER from the server
+    recv(socket_client_fd, &msg_length_header, sizeof(msg_length_header), 0);
 
-    printf("Ther server sent the Message Length of : \n\n%s\n\n", msg_length);
 
+    // Convert string message length into int message length
+    uint msg_length = atoi(msg_length_header);
 
 
     // recieve data from the server
-    char server_response[1024];
+    char server_response[msg_length];
 
 
     // recieve the data from the server
-    recv(socket_fd, &server_response, sizeof(server_response), 0);
+    recv(socket_client_fd, &server_response, sizeof(server_response), 0);
 
     // recieved data from the server successfully then printing the data obtained from the server
-
-    // printf("Ther server sent the data : \n\n%s", server_response);
+    printf("%s\n", server_response);
 
     // closing the socket
-    close(socket_fd);
+    close(socket_client_fd);
 
     
     return EXIT_SUCCESS;
