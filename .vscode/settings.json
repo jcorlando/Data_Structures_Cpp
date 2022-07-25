@@ -1,0 +1,30 @@
+{
+    "files.associations": {
+        "wait.h": "c",
+        "cstdio": "c",
+        "types.h": "c",
+        "siginfo_t.h": "c",
+        "charconv": "c",
+        "source_location": "c",
+        "stdlib.h": "c",
+        "optional": "c",
+        "ratio": "c",
+        "system_error": "c",
+        "array": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "variant": "c",
+        "stdio.h": "c",
+        "my_pid_manager.h": "c",
+        "cstring": "c",
+        "typeinfo": "c",
+        "stdbool.h": "c",
+        "mman.h": "c",
+        "unistd.h": "c",
+        "socket.h": "c",
+        "in.h": "c",
+        "inet.h": "c"
+    }
+}

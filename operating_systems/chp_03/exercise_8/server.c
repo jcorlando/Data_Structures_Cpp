@@ -36,11 +36,11 @@
 //----- Some Defined MACROS ------!!
 #define PORT 65432
 #define HEADERSIZE 64
-#define HAIKU "This server will echo whatever string is received from the client!!!\0"
+#define ECHO "This server will echo whatever string is received from the client!!!\0"
 
 int main()
 {
-    char messageToSend[] = HAIKU;
+    char messageToSend[] = ECHO;
 
 
     // create the server socket

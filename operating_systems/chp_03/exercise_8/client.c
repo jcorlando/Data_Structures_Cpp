@@ -33,10 +33,13 @@
 
 //----- Some Defined MACROS ------!!
 #define PORT 65432
-#define HEADER 64
+#define HEADERSIZE 64
+#define ECHO "This server will echo whatever string is received from the client!!!\0"
 
 int main()
 {
+    char echoMessageToSend[] = ECHO;
+
     // Create a socket
     int socket_client_fd;
     // calling socket function and storing the result in the variable
@@ -85,9 +88,15 @@ int main()
     // Connection has been successfully established below here
 
 
+    // Send the size of the message first
+    // Header length in bytes
+    char send_length[HEADERSIZE];
+    sprintf(send_length, "%lu", sizeof(echoMessageToSend));
+
+
 
     // Header length in bytes
-    char msg_length_header[HEADER];
+    char msg_length_header[HEADERSIZE];
 
 
     // Receive the length of the message that was sent as a HEADER from the server
