@@ -90,12 +90,12 @@ int main()
         if (pid == 0)
         {
             // Send the size of the message as a string in the HEADER first
-            send(socket_client_fd, send_length, sizeof(send_length), 0);
+            // send(socket_client_fd, send_length, sizeof(send_length), 0);
 
 
             // sending the message
             // send(toWhom, Message, SizeOfMessage, FLAG);
-            send(socket_client_fd, messageToSend, sizeof(messageToSend), 0);
+            // send(socket_client_fd, messageToSend, sizeof(messageToSend), 0);
 
 
             // close the socket
