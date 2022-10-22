@@ -13,7 +13,7 @@ clean:
 	rm -f invert_tree
 
 debugMain: main.cpp
-	$(CXX) -std=$(STD) -g $(CFLAGS) main.cpp -o ./debug/invert_tree$(LDFLAGS)
+	$(CXX) -std=$(STD) -fdiagnostics-color=always -g $(CFLAGS) main.cpp -o ./debug/invert_tree$(LDFLAGS)
 
 
 
