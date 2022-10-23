@@ -26,7 +26,8 @@
                 "-Wextra",
                 "${file}",
                 "-o",
-                "${fileDirname}/debug/${fileBasenameNoExtension}"
+                "${fileDirname}/debug/${fileBasenameNoExtension}",
+                "-luuid"
             ],
             "options": {
                 "cwd": "${fileDirname}"

@@ -1,25 +1,33 @@
+#include "classes.cpp"
+
 #include <vector>
-#include <uuid/uuid.h>
-
-#include "printsuccess.cpp" // <-- Includes "<IOSTREAM>" already
 
 
-struct TreeItem
+class TableEntry
 {
-  std::string itemName;
-  uuid_t UUID;
+  public:
+    TreeItem parent;
+    std::vector<TreeItem> children;
+    void printParentChildren()
+    {
+      ; // <---- Start working here. think
+        // <---- of something to do here.
+    }
 };
+
 
 
 int main()
 {
-  // uuid_t UUID;
-  // uuid_generate(UUID);
-  // TreeItem treeItem = 
-  // {
-  //   "Fat Albert",
-  //   std::string aString{ UUID, UUID + 16 },
-  // };
+  TreeItem treeItem_one("JabberWockey");
+  TreeItem treeItem_two("BanderSnatch");
+  TreeItem treeItem_three("SuperFly");
+  treeItem_one.printValues();
+  treeItem_two.printValues();
+  treeItem_three.printValues();
+
+
+
 
   printEndOfProgram();
   return 0;
