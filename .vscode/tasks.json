@@ -14,17 +14,7 @@
             ]
         },
         {
-            "label": "Make Clean",
-            "type": "shell",
-            "command": "make clean",
-            "options":
-            {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Debug Build",
+            "label": "Make Debug",
             "type": "cppbuild",
             "command": "g++",
             "args": [
@@ -49,6 +39,29 @@
                 "kind": "build",
                 "isDefault": true
             },
+        },
+        {
+            "label": "Make Run",
+            "type": "shell",
+            "command": "./${fileBasenameNoExtension}",
+            "options":
+            {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher":
+            [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Make Clean",
+            "type": "shell",
+            "command": "make clean",
+            "options":
+            {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": []
         }
     ],
     "version": "2.0.0"

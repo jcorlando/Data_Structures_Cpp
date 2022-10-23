@@ -1,19 +1,26 @@
-#include <iostream>
 #include <vector>
+#include <uuid/uuid.h>
+
+#include "printsuccess.cpp" // <-- Includes "<IOSTREAM>" already
 
 
-struct item
+struct TreeItem
 {
   std::string itemName;
+  uuid_t UUID;
 };
 
 
 int main()
 {
+  // uuid_t UUID;
+  // uuid_generate(UUID);
+  // TreeItem treeItem = 
+  // {
+  //   "Fat Albert",
+  //   std::string aString{ UUID, UUID + 16 },
+  // };
 
-    // Always append this to the end of every program to
-    // signify to the terminal the program has ended
-    std::cout << "\n\n\nProgram terminated successfully\n\n" << std::endl;
-
-    return 0;
+  printEndOfProgram();
+  return 0;
 }
