@@ -1,4 +1,4 @@
-CFLAGS=-std=c17 -Wpedantic -Wall -Wextra
+CFLAGS=-std=c17 -Wpedantic -Wall -Wextra -Werror
 LDFLAGS=
 
 main: main.c

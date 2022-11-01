@@ -1,11 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-
-//-------- Some Defined MACROS --------!!
-#define PORT 5575
-#define HEADERSIZE 64
+#include <sys/types.h>
+#include <string.h>
 
 /* 
 *  Design a program using ordinary pipes in which one process sends a string message to a second
@@ -16,19 +13,56 @@
 *  the second to the first process. You can write this program using either UNIX or Windows pipes.
 */ 
 
-
-int main()
+int main( int argc, char* argv[] )
 {
-    int fd[2];
+    int fd_1[2]; // Pipe 1
+    int fd_2[2]; // Pipe 2
 
-    if(pipe(fd) == -1)
+    int nBytes;
+
+    char readBuffer[1024];
+
+    pid_t childpid;
+
+
+    if( pipe(fd_1) == -1 )
     {
-        printf("\n\nAn error occured opening the pipe\n");
+        printf("\n\nAn error occured opening the pipe 1\n");
+        return EXIT_FAILURE;
+    }
+    if( pipe(fd_2) == -1 )
+    {
+        printf("\n\nAn error occured opening the pipe 2\n");
         return EXIT_FAILURE;
     }
     
+    if( (childpid = fork()) == -1 )
+    {
+        perror("fork"); // Error checking during fork
+        exit(EXIT_FAILURE);
+    }
 
+    if( childpid == 0 && argc > 1 )
+    {
+        close(fd_1[1]);  // Child process closes up SEND side of pipe 1
+        close(fd_2[0]);  // Child process closes up RECEIVE side of pipe 2
 
+        nBytes = read(fd_1[0], readBuffer, sizeof(readBuffer));  // Read in a string from the pipe
+        printf("\nReceived string: %s\nnBytes  ==  %d\n\n", readBuffer, nBytes);
+
+        exit(EXIT_SUCCESS); // Always use exit() in child processes
+    }
+    else if( argc > 1 )
+    {
+        close(fd_1[0]); // Parent process closes up RECEIVE side of pipe 1
+        close(fd_2[1]); // Parent process closes up SEND side of pipe 2
+
+        char* string;
+        string = argv[1];
+
+        write(fd_1[1], string, (strlen(string)+1)); // Send "string" through the output side of pipe
+
+    }
 
     return EXIT_SUCCESS;
 }
