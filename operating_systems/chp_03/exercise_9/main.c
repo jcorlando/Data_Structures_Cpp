@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdint.h>
 
 /* 
 *  Design a program using ordinary pipes in which one process sends a string message to a second
@@ -15,8 +17,8 @@
 
 int main( int argc, char* argv[] )
 {
-    int fd_1[2]; // Pipe 1
-    int fd_2[2]; // Pipe 2
+    int fd_1[2];  // Pipe 1
+    int fd_2[2];  // Pipe 2
 
     int nBytes;
 
@@ -24,7 +26,7 @@ int main( int argc, char* argv[] )
 
     pid_t childpid;
 
-
+    // Error Checking Pipe Creation and Fork
     if( pipe(fd_1) == -1 )
     {
         printf("\n\nAn error occured opening the pipe 1\n");
@@ -38,9 +40,12 @@ int main( int argc, char* argv[] )
     
     if( (childpid = fork()) == -1 )
     {
-        perror("fork"); // Error checking during fork
+        perror("fork");
         exit(EXIT_FAILURE);
     }
+
+
+
 
     if( childpid == 0 && argc > 1 )
     {
@@ -49,13 +54,22 @@ int main( int argc, char* argv[] )
 
         nBytes = read(fd_1[0], readBuffer, sizeof(readBuffer));  // Read in a string from the pipe
         printf("\nReceived string: %s\nnBytes  ==  %d\n\n", readBuffer, nBytes);
+        
+        for (int i = 0; i < (nBytes - 1); i++)
+        {
+            printf("%c", readBuffer[i]);
+        }
+
+        printf("\n\n");
+        
+
 
         exit(EXIT_SUCCESS); // Always use exit() in child processes
     }
     else if( argc > 1 )
     {
-        close(fd_1[0]); // Parent process closes up RECEIVE side of pipe 1
-        close(fd_2[1]); // Parent process closes up SEND side of pipe 2
+        close(fd_1[0]);  // Parent process closes up RECEIVE side of pipe 1
+        close(fd_2[1]);  // Parent process closes up SEND side of pipe 2
 
         char* string;
         string = argv[1];
