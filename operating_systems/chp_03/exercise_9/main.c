@@ -15,39 +15,35 @@
 *  the second to the first process. You can write this program using either UNIX or Windows pipes.
 */ 
 
-int main( int argc, char* argv[] )
+int main()
 {
     int fd_1[2];  // Pipe 1
     int fd_2[2];  // Pipe 2
 
     int nBytes;
 
-    char readBuffer[1024];
+    char stdInBuffer[2048];
+    char readBuffer[2048];
+
+    nBytes = read(STDIN_FILENO, stdInBuffer, sizeof(stdInBuffer));  // Read in a string from the pipe
 
     pid_t childpid;
 
     // Error Checking Pipe Creation and Fork
-    if( pipe(fd_1) == -1 )
-    {
+    if( pipe(fd_1) == -1 ) {
         printf("\n\nAn error occured opening the pipe 1\n");
         return EXIT_FAILURE;
     }
-    if( pipe(fd_2) == -1 )
-    {
+    if( pipe(fd_2) == -1 ) {
         printf("\n\nAn error occured opening the pipe 2\n");
         return EXIT_FAILURE;
     }
-    
-    if( (childpid = fork()) == -1 )
-    {
+    if( (childpid = fork()) == -1 ) {
         perror("fork");
         exit(EXIT_FAILURE);
     }
 
-
-
-
-    if( childpid == 0 && argc > 1 )
+    if( childpid == 0 )
     {
         close(fd_1[1]);  // Child process closes up SEND side of pipe 1
         close(fd_2[0]);  // Child process closes up RECEIVE side of pipe 2
@@ -57,26 +53,35 @@ int main( int argc, char* argv[] )
         
         for (int i = 0; i < (nBytes - 1); i++)
         {
-            printf("%c", readBuffer[i]);
+            if ( islower(readBuffer[i]) ) {
+                readBuffer[i] = toupper(readBuffer[i]); //change to uppercase
+            }
+            else {
+                readBuffer[i] = tolower(readBuffer[i]); //else change to lowercase
+            }
         }
 
-        printf("\n\n");
+        write(fd_2[1], readBuffer, (strlen(readBuffer)+1)); // Send "string'\0'" through the output side of pipe
+
+        close(fd_1[0]);  // Child process closes up RECEIVE side of pipe 1
+        close(fd_2[1]);  // Child process closes up SEND side of pipe 2
         
-
-
         exit(EXIT_SUCCESS); // Always use exit() in child processes
     }
-    else if( argc > 1 )
+    else
     {
         close(fd_1[0]);  // Parent process closes up RECEIVE side of pipe 1
         close(fd_2[1]);  // Parent process closes up SEND side of pipe 2
 
-        char* string;
-        string = argv[1];
+        char* string = stdInBuffer;
 
-        write(fd_1[1], string, (strlen(string)+1)); // Send "string" through the output side of pipe
+        write(fd_1[1], string, (strlen(string)+1));             // Send "string'\0'" through the output side of pipe
 
+        nBytes = read(fd_2[0], readBuffer, sizeof(readBuffer)); // Read in a string from the pipe
+        printf("\nReceived Reversed string: %s\nnBytes  ==  %d\n\n", readBuffer, nBytes);
+
+        close(fd_1[1]);  // Child process closes up SEND side of pipe 1
+        close(fd_2[0]);  // Child process closes up RECEIVE side of pipe 2
     }
-
     return EXIT_SUCCESS;
 }
