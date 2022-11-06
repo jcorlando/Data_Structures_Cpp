@@ -25,7 +25,7 @@ int main()
     char stdInBuffer[2048];
     char readBuffer[2048];
 
-    nBytes = read(STDIN_FILENO, stdInBuffer, sizeof(stdInBuffer));  // Read in a string from the pipe
+    nBytes = read(STDIN_FILENO, stdInBuffer, sizeof(stdInBuffer));  // Read in a string from stdin and the pipe
 
     pid_t childpid;
 
@@ -80,8 +80,8 @@ int main()
         nBytes = read(fd_2[0], readBuffer, sizeof(readBuffer)); // Read in a string from the pipe
         printf("\nReceived Reversed string: %s\nnBytes  ==  %d\n\n", readBuffer, nBytes);
 
-        close(fd_1[1]);  // Child process closes up SEND side of pipe 1
-        close(fd_2[0]);  // Child process closes up RECEIVE side of pipe 2
+        close(fd_1[1]);  // Parent process closes up SEND side of pipe 1
+        close(fd_2[0]);  // Parent process closes up RECEIVE side of pipe 2
     }
     return EXIT_SUCCESS;
 }
