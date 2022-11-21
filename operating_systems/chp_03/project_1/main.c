@@ -10,7 +10,6 @@
 
 int main()
 {
-    // char *args[MAX_LINE/2 + 1]; /* command line arguments */
     int should_run = true;         /* flag to determine when to exit program */
 
     while(should_run)
@@ -19,18 +18,19 @@ int main()
         printf("osh> ");     // <-- Shell Prompt
         fflush(stdout);      // <-- Flush I/O buffers
         printf("\033[;37m"); // <-- Revert back to White Text
-        char *arguments[] =
-        {
-            "ping",
-            "8.8.8.8",
-            "-c",
-            "4",
-            NULL
-        };
         char string[1024];
-        scanf("%s", string);
+        char *arguments[20];
+        fgets(string, 1024, stdin);
         fflush(stdin);      // <-- Flush I/O buffers
-        if( !strcmp(string, "exit") ) { // <-- Exit if "exit" command
+        char *token;
+        token = strtok(string, " ");
+        for(int i = 0; token != NULL; i++)
+        {
+            arguments[i] = token;
+            printf("\ntoken: %s\n", arguments[i]);
+            token = strtok(NULL, " ");
+        }
+        if( !strcmp(arguments[0], "exit") ) { // <-- Exit if "exit" command
             should_run = false;
         }
         /* 
@@ -40,23 +40,25 @@ int main()
         *  (3) parent will invoke wait() unless command included &
         */ 
 
-        pid_t parent;
 
-        if( (parent = fork()) == -1 ) {
-            perror("fork");
-            exit(EXIT_FAILURE);
-        }
 
-        if(!parent)  // <-- Child Process
-        {
-            execvp(arguments[0], arguments);
-            exit(EXIT_SUCCESS); // Always use exit() in child processes
-        }
-        else      // <-- Parent Process
-        {
-            // parent must wait unless "&" is added to the end of arguments vector
-            wait(NULL);
-        }
+        // pid_t parent;
+
+        // if( (parent = fork()) == -1 ) {
+        //     perror("fork");
+        //     exit(EXIT_FAILURE);
+        // }
+
+        // if(!parent)
+        // {
+        //     // execvp(arguments[0], arguments);
+        //     exit(EXIT_SUCCESS); // Always use exit() in child processes
+        // }
+        // else
+        // {
+        //     // parent must wait unless "&" is added to the end of arguments vector
+        //     wait(NULL);
+        // }
     }
 
     return EXIT_SUCCESS;
