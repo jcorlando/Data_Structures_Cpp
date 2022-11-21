@@ -10,27 +10,27 @@
 
 int main()
 {
-    int should_run = true;         /* flag to determine when to exit program */
+    typedef unsigned int uint;
+    int should_run = true;    /* flag to determine when to exit program */
 
     while(should_run)
     {
-        printf("\033[;32m"); // <-- Create Green text
-        printf("osh> ");     // <-- Shell Prompt
-        fflush(stdout);      // <-- Flush I/O buffers
-        printf("\033[;37m"); // <-- Revert back to White Text
+        printf("\033[;32m");  // <-- Create Green text
+        printf("osh> ");      // <-- Shell Prompt
+        fflush(stdout);       // <-- Flush I/O buffers
+        printf("\033[;37m");  // <-- Revert back to White Text
         char string[1024];
-        char *arguments[20];
+        char *arguments[MAX_LINE];
         fgets(string, 1024, stdin);
-        fflush(stdin);      // <-- Flush I/O buffers
+        fflush(stdin);        // <-- Flush I/O buffers
         char *token;
         token = strtok(string, " ");
-        for(int i = 0; token != NULL; i++)
+        for(uint i = 0; token != NULL; i++)
         {
             arguments[i] = token;
-            printf("\ntoken: %s\n", arguments[i]);
             token = strtok(NULL, " ");
         }
-        if( !strcmp(arguments[0], "exit") ) { // <-- Exit if "exit" command
+        if( !strcmp(arguments[0], "exit") || !strcmp(arguments[0], "exit\n") ) { // <-- Exit if "exit" command
             should_run = false;
         }
         /* 
