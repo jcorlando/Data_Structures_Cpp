@@ -25,12 +25,15 @@ int main()
         fflush(stdin);        // <-- Flush I/O buffers
         char *token;
         token = strtok(string, " ");
-        for(uint i = 0; token != NULL; i++)
-        {
+        uint lastIndex = 0;
+        for(uint i = 0; token != NULL; i++) {
+            token[strcspn(token, "\n")] = 0;
             arguments[i] = token;
             token = strtok(NULL, " ");
+            lastIndex = i;
         }
-        if( !strcmp(arguments[0], "exit") || !strcmp(arguments[0], "exit\n") ) { // <-- Exit if "exit" command
+        arguments[lastIndex + 1] = NULL;
+        if( !strcmp(arguments[0], "exit") ) { // <-- Exit if "exit" command
             should_run = false;
         }
         /* 
@@ -40,25 +43,22 @@ int main()
         *  (3) parent will invoke wait() unless command included &
         */ 
 
+        // TODO: Add history functionality
 
+        pid_t parent;
 
-        // pid_t parent;
-
-        // if( (parent = fork()) == -1 ) {
-        //     perror("fork");
-        //     exit(EXIT_FAILURE);
-        // }
-
-        // if(!parent)
-        // {
-        //     // execvp(arguments[0], arguments);
-        //     exit(EXIT_SUCCESS); // Always use exit() in child processes
-        // }
-        // else
-        // {
-        //     // parent must wait unless "&" is added to the end of arguments vector
-        //     wait(NULL);
-        // }
+        if( (parent = fork()) == -1 ) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        if(!parent) {
+            execvp(arguments[0], arguments);
+            exit(EXIT_SUCCESS); // Always use exit() in child processes
+        }
+        else {
+            // parent must wait unless "&" is added to the end of arguments vector
+            wait(NULL);
+        }
     }
 
     return EXIT_SUCCESS;
