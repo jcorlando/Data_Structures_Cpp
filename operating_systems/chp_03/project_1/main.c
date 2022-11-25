@@ -52,12 +52,29 @@ int main()
             exit(EXIT_FAILURE);
         }
         if(!parent) {
-            execvp(arguments[0], arguments);
+            if(should_run) {
+                int err = execvp(arguments[0], arguments);
+                if(err == -1) {
+                    printf("\nCould Not Find Program To Execute\n");
+                    exit(EXIT_FAILURE);
+                }
+            }
             exit(EXIT_SUCCESS); // Always use exit() in child processes
         }
         else {
             // parent must wait unless "&" is added to the end of arguments vector
-            wait(NULL);
+            pid_t wStatus;
+            wait(&wStatus);
+
+            // If Program Finished Execution Normally i.e. (Without External SIG-Kill)
+            if(WIFEXITED(wStatus)) {
+                int statusCode = WEXITSTATUS(wStatus); // <-- Capture Exit Status
+                if(statusCode == 0) {
+                    // Program Exited With A Status Code Of EXIT_SUCCESS
+                } else {
+                    // Program Exited With A Status Code Of EXIT_FAILURE
+                }
+            }
         }
     }
 
