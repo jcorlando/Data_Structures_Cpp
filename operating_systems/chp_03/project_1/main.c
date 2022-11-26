@@ -5,12 +5,14 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "circularbuffer.c" // <--  My personal includes
 
-#define MAX_LINE 80  /* The maximum length command */
+#define MAX_ARG 128  /* The maximum length command */
 
 int main()
 {
     typedef unsigned int uint;
+    struct CircularBuffer commandHistory;
     int should_run = true;    /* flag to determine when to exit program */
 
     while(should_run)
@@ -20,14 +22,16 @@ int main()
         fflush(stdout);       // <-- Flush I/O buffers
         printf("\033[;37m");  // <-- Revert back to White Text
         char string[1024];
-        char *arguments[MAX_LINE];
+        char *arguments[MAX_ARG];
         fgets(string, 1024, stdin);
         fflush(stdin);        // <-- Flush I/O buffers
+        string[strcspn(string, "\n")] = 0; // <-- Remove User Entered NewLine Character "\n"
+        strcpy(commandHistory.prevCommand, string);
+        printf("\n%s\n", commandHistory.prevCommand);
         char *token;
         token = strtok(string, " ");
         uint lastIndex = 0;
         for(uint i = 0; token != NULL; i++) {
-            token[strcspn(token, "\n")] = 0;
             arguments[i] = token;
             token = strtok(NULL, " ");
             lastIndex = i;
