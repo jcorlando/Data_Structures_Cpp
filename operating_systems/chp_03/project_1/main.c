@@ -16,7 +16,8 @@ typedef unsigned int uint;
 int main()
 {
     struct CircularBuffer commandHistory = {.size = 0, .head = 0};
-    int should_run = true;    /* flag to determine when to exit program */
+    int should_run = true;      /* flag to determine when to exit program */
+    bool should_wait = true;    /* <-- flag to determine if Child Process should wait To Finish */
 
     while(should_run)
     {
@@ -30,22 +31,25 @@ int main()
         fflush(stdin);        // <-- Flush I/O buffers
         string[strcspn(string, "\n")] = 0; // <-- Remove User Input NewLine Character "\n"
         addEntry(&commandHistory, string);
+        uint lastIndex = 0;
         char *token;
         token = strtok(string, " ");
         for(uint i = 0; token != NULL; i++) {
             arguments[i] = token;
             arguments[i + 1] = NULL; // <-- Insert "NULL" as last argument
             token = strtok(NULL, " ");
+            lastIndex = i;
         }
-        if( !strcmp(arguments[0], "exit") ) { // <-- Exit if "exit" command
+        if( arguments[0] != NULL && !strcmp(arguments[0], "exit") ) { // <-- Exit if "exit" command
             should_run = false;
         }
-        /* 
-        *  After reading user input, the steps are:
-        *  (1) fork a child process using fork()
-        *  (2) the child process will invoke execvp()
-        *  (3) parent will invoke wait() unless command included &
-        */ 
+        should_wait = true;
+        if( arguments[lastIndex] != NULL && !strcmp(arguments[lastIndex], "&") ) {
+            should_wait = false;
+            arguments[lastIndex] = NULL;
+        }
+
+        // TODO: Finish History Feature.  If "!!" Run Previous Command
 
         pid_t parent;
 
@@ -64,17 +68,19 @@ int main()
             exit(EXIT_SUCCESS); // Always use exit() in child processes
         }
         else {
-            // parent must wait unless "&" is added to the end of arguments vector
-            pid_t wStatus;
-            wait(&wStatus);
-
-            // If Program Finished Execution Normally i.e. (Without External SIG-Kill)
-            if(WIFEXITED(wStatus)) {
-                int statusCode = WEXITSTATUS(wStatus); // <-- Capture Exit Status
-                if(statusCode == 0) {
-                    // Program Exited With A Status Code Of EXIT_SUCCESS
-                } else {
-                    // Program Exited With A Status Code Of EXIT_FAILURE
+            if(should_wait) {
+                pid_t wStatus;
+                wait(&wStatus);
+                while( (wait(&wStatus)) > 0 ) { //<-- Father waits for all the child processes
+                    // If Program Finished Execution Normally i.e. (Without External SIG-Kill)
+                    if(WIFEXITED(wStatus)) {
+                        int statusCode = WEXITSTATUS(wStatus); // <-- Capture Exit Status
+                        if(statusCode == 0) {
+                            // Program Exited With A Status Code Of EXIT_SUCCESS
+                        } else {
+                            // Program Exited With A Status Code Of EXIT_FAILURE
+                        }
+                    }
                 }
             }
         }

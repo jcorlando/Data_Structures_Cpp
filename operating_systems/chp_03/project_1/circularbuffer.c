@@ -3,9 +3,9 @@
 
 struct CircularBuffer
 {
-    uint size;
-    uint head;
-    char history[MAXHIST][MAXLENCOMM];
+    uint size;                          // <-- Current History List Size
+    uint head;                          // <-- Index To Insert Next
+    char history[MAXHIST][MAXLENCOMM];  // <-- History List <String>
 };
 
 void addEntry(struct CircularBuffer *commandHistory, char *string)
@@ -19,20 +19,5 @@ void addEntry(struct CircularBuffer *commandHistory, char *string)
         commandHistory->head = 0;
     }
 }
-
-// void printHistoryList(struct CircularBuffer *commandHistory)
-// {
-//     printf("\n\n\n");
-//     fflush(stdout);
-//     for (uint i = commandHistory->size; i > 0; i--)
-//     {
-//         // ---------- Iterate Backwards to Display History -------------
-//         uint indexToPrint = commandHistory->head - i;
-//         char *printString = commandHistory->history[indexToPrint];
-//         printf( "\nRecent Commands List # %d  ==  %s", (i-1), printString );
-//     }
-//     printf("\n\n\n");
-//     fflush(stdout);
-// }
 
 #endif // CIRCULARBUFFER_C
