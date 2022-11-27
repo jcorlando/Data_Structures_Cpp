@@ -4,7 +4,7 @@ LDFLAGS=
 debug: main
 	gcc $(CFLAGS) -fdiagnostics-color=always -g main.c -o ./debug/main
 
-main: main.c
+main: main.c circularbuffer.c
 	gcc $(CFLAGS) main.c -o main $(LDFLAGS)
 
 clean:

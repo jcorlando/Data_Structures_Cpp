@@ -5,38 +5,38 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "circularbuffer.c" // <--  My personal includes
 
-#define MAX_ARG 128  /* The maximum length command */
+// Typedefs, Macros & Personal Definitions & Includes
+#define MAXLENCOMM 1024 /* The maximum command length */
+#define MAX_ARG 128     /* The maximum argument length */
+#define MAXHIST 64      /* The maximum saved history */
+typedef unsigned int uint;
+#include "circularbuffer.c" // <-- My personal includes
 
 int main()
 {
-    typedef unsigned int uint;
-    struct CircularBuffer commandHistory;
+    struct CircularBuffer commandHistory = {.size = 0, .head = 0};
     int should_run = true;    /* flag to determine when to exit program */
 
     while(should_run)
     {
         printf("\033[;32m");  // <-- Create Green text
-        printf("osh> ");      // <-- Shell Prompt
+        printf("osh> ");      // <-- Prompt User for Input
         fflush(stdout);       // <-- Flush I/O buffers
         printf("\033[;37m");  // <-- Revert back to White Text
-        char string[1024];
+        char string[MAXLENCOMM];
         char *arguments[MAX_ARG];
-        fgets(string, 1024, stdin);
+        fgets(string, MAXLENCOMM, stdin); // <-- Read user input from stdIn
         fflush(stdin);        // <-- Flush I/O buffers
-        string[strcspn(string, "\n")] = 0; // <-- Remove User Entered NewLine Character "\n"
-        strcpy(commandHistory.prevCommand, string);
-        printf("\n%s\n", commandHistory.prevCommand);
+        string[strcspn(string, "\n")] = 0; // <-- Remove User Input NewLine Character "\n"
+        addEntry(&commandHistory, string);
         char *token;
         token = strtok(string, " ");
-        uint lastIndex = 0;
         for(uint i = 0; token != NULL; i++) {
             arguments[i] = token;
+            arguments[i + 1] = NULL; // <-- Insert "NULL" as last argument
             token = strtok(NULL, " ");
-            lastIndex = i;
         }
-        arguments[lastIndex + 1] = NULL;
         if( !strcmp(arguments[0], "exit") ) { // <-- Exit if "exit" command
             should_run = false;
         }
@@ -46,8 +46,6 @@ int main()
         *  (2) the child process will invoke execvp()
         *  (3) parent will invoke wait() unless command included &
         */ 
-
-        // TODO: Add history functionality
 
         pid_t parent;
 
