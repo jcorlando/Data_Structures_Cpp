@@ -32,8 +32,19 @@ int main()
         string[strcspn(string, "\n")] = 0; // <-- Remove User Input NewLine Character "\n"
         
         // Run Previous Historical Command If "!!" is Entered
+        uint prevIndex;
         if( string != NULL && !strcmp(string, "!!") ) {
-            strcpy(string, commandHistory.history[commandHistory.head - 1]);
+            if (commandHistory.size == 0) {
+                fprintf(stdout, "No commands in history.\n");
+            }
+            else if ( commandHistory.head == 0 ) {
+                prevIndex = MAXHIST - 1;
+                strcpy(string, commandHistory.history[prevIndex]);
+            }
+            else {
+                prevIndex = commandHistory.head - 1;
+                strcpy(string, commandHistory.history[prevIndex]);
+            }
         }
         else if ( strcmp(string, "") ) {
             addEntry(&commandHistory, string);
