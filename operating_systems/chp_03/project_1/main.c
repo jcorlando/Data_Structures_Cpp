@@ -30,7 +30,14 @@ int main()
         fgets(string, MAXLENCOMM, stdin); // <-- Read user input from stdIn
         fflush(stdin);        // <-- Flush I/O buffers
         string[strcspn(string, "\n")] = 0; // <-- Remove User Input NewLine Character "\n"
-        addEntry(&commandHistory, string);
+        
+        // Run Previous Historical Command If "!!" is Entered
+        if( string != NULL && !strcmp(string, "!!") ) {
+            strcpy(string, commandHistory.history[commandHistory.head - 1]);
+        }
+        else if ( strcmp(string, "") ) {
+            addEntry(&commandHistory, string);
+        }
         uint lastIndex = 0;
         char *token;
         token = strtok(string, " ");
@@ -48,8 +55,7 @@ int main()
             should_wait = false;
             arguments[lastIndex] = NULL;
         }
-
-        // TODO: Finish History Feature.  If "!!" Run Previous Command
+        
 
         pid_t parent;
 
@@ -61,7 +67,6 @@ int main()
             if(should_run) {
                 int err = execvp(arguments[0], arguments);
                 if(err == -1) {
-                    printf("\nCould Not Find Program To Execute\n");
                     exit(EXIT_FAILURE);
                 }
             }
