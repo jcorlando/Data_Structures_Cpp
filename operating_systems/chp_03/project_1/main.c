@@ -31,7 +31,7 @@ int main()
         fflush(stdin);        // <-- Flush I/O buffers
         string[strcspn(string, "\n")] = 0; // <-- Remove User Input NewLine Character "\n"
         
-        // Run Previous Historical Command If "!!" is Entered
+        // Detect "!!" and empty string "" inputs <-- Handle Accordingly
         uint prevIndex;
         if( string != NULL && !strcmp(string, "!!") ) {
             if (commandHistory.size == 0) {
@@ -46,18 +46,27 @@ int main()
                 strcpy(string, commandHistory.history[prevIndex]);
             }
         }
+        // If Valid Input, Add Entry To History List
         else if ( strcmp(string, "") ) {
             addEntry(&commandHistory, string);
         }
+
+        // Tokenize Input String
         uint lastIndex = 0;
         char *token;
         token = strtok(string, " ");
+
+        // TODO: Add Functionality That Detects "<" or ">" Tokens and Handles inpu/output Re-Direction
+        // TODO: Managing the redirection of both input and output will involve using the dup2() function
+
         for(uint i = 0; token != NULL; i++) {
             arguments[i] = token;
             arguments[i + 1] = NULL; // <-- Insert "NULL" as last argument
             token = strtok(NULL, " ");
             lastIndex = i;
         }
+
+        // Detect "exit" and "&" Inputs
         if( arguments[0] != NULL && !strcmp(arguments[0], "exit") ) { // <-- Exit if "exit" command
             should_run = false;
         }
@@ -66,8 +75,8 @@ int main()
             should_wait = false;
             arguments[lastIndex] = NULL;
         }
-        
 
+        // Fork() and Execute Command In Child Process
         pid_t parent;
 
         if( (parent = fork()) == -1 ) {
