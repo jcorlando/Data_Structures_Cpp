@@ -21,14 +21,14 @@ int main()
 
     while(should_run)
     {
-        printf("\033[;32m");  // <-- Create Green text
-        printf("osh> ");      // <-- Prompt User for Input
-        fflush(stdout);       // <-- Flush I/O buffers
-        printf("\033[;37m");  // <-- Revert back to White Text
+        printf("\033[;32m");        // <-- Create Green text
+        fprintf(stdout, "osh> ");   // <-- Prompt User for Input
+        fflush(stdout);             // <-- Flush I/O (Output) buffers
+        printf("\033[;37m");        // <-- Revert back to White Text
         char string[MAXLENCOMM];
         char *arguments[MAX_ARG];
         fgets(string, MAXLENCOMM, stdin); // <-- Read user input from stdIn
-        fflush(stdin);        // <-- Flush I/O buffers
+        fflush(stdin);        // <-- Flush I/O (Input) buffers
         string[strcspn(string, "\n")] = 0; // <-- Remove User Input NewLine Character "\n"
         
         // Detect "!!" and empty string "" inputs <-- Handle Accordingly
@@ -36,14 +36,19 @@ int main()
         if( string != NULL && !strcmp(string, "!!") ) {
             if (commandHistory.size == 0) {
                 fprintf(stdout, "No commands in history.\n");
+                fflush(stdout);
             }
             else if ( commandHistory.head == 0 ) {
                 prevIndex = MAXHIST - 1;
                 strcpy(string, commandHistory.history[prevIndex]);
+                fprintf(stdout, "No commands in history.\n");
+                fflush(stdout);
             }
             else {
                 prevIndex = commandHistory.head - 1;
                 strcpy(string, commandHistory.history[prevIndex]);
+                fprintf(stdout, "No commands in history.\n");
+                fflush(stdout);
             }
         }
         // If Valid Input, Add Entry To History List
@@ -58,6 +63,7 @@ int main()
 
         // TODO: Add Functionality That Detects "<" or ">" Tokens and Handles inpu/output Re-Direction
         // TODO: Managing the redirection of both input and output will involve using the dup2() function
+        // TODO: If "!!" Command detected, first print the previous command, then run
 
         for(uint i = 0; token != NULL; i++) {
             arguments[i] = token;
