@@ -64,6 +64,8 @@ int main()
         // TODO: Add Functionality That Detects "<" or ">" Tokens and Handles inpu/output Re-Direction
         // TODO: Managing the redirection of both input and output will involve using the dup2() function
         // TODO: If "!!" Command detected, first print the previous command, then run
+        // ----------------------------------------------------------------------------------------------
+        // TODO: Create process group for each seperate job (Process) following a "<", ">" or "|" command
 
         for(uint i = 0; token != NULL; i++) {
             arguments[i] = token;
