@@ -90,43 +90,66 @@ int main()
         }
 	
 	// Child Process
-        if(!parent)
-	{
+        if(!parent) {
 	    bool redirectOutput = false;
+	    bool redirectInput = false;
 	    int fd;
 	    int terminal_stdout_fd;
-            if(should_run)
-	    {
-		for(uint i = 0; i < lastIndex; i++)
-		{
-		  if( !strcmp(arguments[i], ">") )
-		  {
+	    int terminal_stdin_fd;
+            if(should_run) {
+		for(uint i = 0; i < lastIndex; i++) {
+		  if( !strcmp(arguments[i], ">") ) {
 		    redirectOutput = true;		    // <-- Set Output Re-direct flag to true
 		    arguments[i] = NULL;		    // <-- set ">" argument string to NULL
 		    strcpy(redirectFile, arguments[i + 1]); // <-- Copy Re-direct argument to "redirectFile" variable
 		    arguments[i + 1] = NULL;		    // <-- Set (output) Re-direct string argument to NULL
 		  }
+		  if( !strcmp(arguments[i], "<") ) {
+		    redirectInput = true;		      // <-- Set Input Re-direct flag to true 
+		    arguments[i] = NULL;		      // <-- set "<" argument string to NULL
+		    strcpy(redirectFile, arguments[i + 1]);   // <-- Copy Re-direct argument to "redirectFile" variable
+		    arguments[i + 1] = NULL;		      // <-- Set (inputt) Re-direct string argument to NULL
+		  }
 		}
+
 		// If (Output) Re-direct flag has been set
-		if(redirectOutput)
-		{
+		if(redirectOutput) {
 		  /* Create output file, GET file descriptor */
 		  fd = open(redirectFile, O_WRONLY| O_TRUNC | O_CREAT, 0666);
 		  /* Save current stdout for use later */
 		  terminal_stdout_fd = dup(STDOUT_FILENO);
 		  dup2(fd, STDOUT_FILENO);
 		}
+
+		// If (input) Re-direct flag has been set
+		if(redirectInput) {
+		  /* Read from input file, GET file descriptor */
+		  fd = open(redirectFile, O_RDONLY);
+		  /* Save current stdin for use later */
+		  terminal_stdin_fd = dup(STDIN_FILENO);
+		  dup2(fd, STDIN_FILENO);
+		}
+
 		// Run the Command that has been input
                 int err = execvp(arguments[0], arguments);
-                if(err == -1)
-		{
+                if(err == -1) {
 		  exit(EXIT_FAILURE); // Always use exit() in child processes
                 }
-		if(redirectOutput)
-		{
+		if(redirectOutput) {
 		  /* Restore Terminal stdout */
 		  dup2(terminal_stdout_fd, STDOUT_FILENO);
 		  if(close(terminal_stdout_fd) == -1) {
+		    exit(EXIT_FAILURE);
+		  }
+		  /* Close file "fd" descriptor */
+		  if(close(fd) == -1) {
+		    exit(EXIT_FAILURE);
+		  }
+		}
+		if(redirectInput) {
+		  /* Restore Terminal stdin */
+		  dup2(terminal_stdin_fd, STDIN_FILENO);
+		  if(close(terminal_stdin_fd) == -1) {
 		    exit(EXIT_FAILURE);
 		  }
 		  /* Close file "fd" descriptor */
