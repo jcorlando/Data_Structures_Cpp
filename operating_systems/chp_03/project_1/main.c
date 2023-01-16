@@ -96,30 +96,34 @@ int main()
 	    bool redirectInput = false;
 	    bool pipeFlagSet = false;	/* Flag to set when a pipe operator was found in the command */
 	    int fd;
+	    uint pipeIndex = 0;
 
             if(should_run) {
-		for(uint i = 0; i < lastIndex; i++) {
-		  if( pipeFlagSet ) {
+
+		for(uint i = 0; i <= lastIndex; i++) {
+
+		  if( redirectInput || redirectOutput ) {
+		    strcpy(redirectFile, arguments[i]);// <-- Copy Re-direct argument to "redirectFile" variable
+		    arguments[i] = NULL;	       // <-- Set (output) or (input) Re-direct string argument to NULL
+		  }
+		  else if ( pipeFlagSet ) {
+		    pipeArguments[pipeIndex] = arguments[i];
 		    arguments[i] = NULL;
+		    pipeIndex++;
 		  }
-		  if( !strcmp(arguments[i], ">") ) {
-		    redirectOutput = true;		    // <-- Set Output Re-direct flag to true
-		    arguments[i] = NULL;		    // <-- set ">" argument string to NULL
-		    strcpy(redirectFile, arguments[i + 1]); // <-- Copy Re-direct argument to "redirectFile" variable
-		    arguments[i + 1] = NULL;		    // <-- Set (output) Re-direct string argument to NULL
-		  }
-		  else if( !strcmp(arguments[i], "<") ) {
-		    redirectInput = true;		      // <-- Set Input Re-direct flag to true 
-		    arguments[i] = NULL;		      // <-- set "<" argument string to NULL
-		    strcpy(redirectFile, arguments[i + 1]);   // <-- Copy Re-direct argument to "redirectFile" variable
-		    arguments[i + 1] = NULL;		      // <-- Set (inputt) Re-direct string argument to NULL
-		  }
-		  else if( !strcmp(arguments[i], "|") )
-		  {
-		    pipeFlagSet = true;
-		    arguments[i] = NULL;
-		    pipeArguments[0] = arguments[i + 1];
-		    arguments[i + 1] = NULL;
+		  else {
+		    if( !strcmp(arguments[i], ">") ) {
+		      redirectOutput = true;		    // <-- Set Output Re-direct flag to true
+		      arguments[i] = NULL;		    // <-- set ">" argument string to NULL
+		    }
+		    else if( !strcmp(arguments[i], "<") ) {
+		      redirectInput = true;		      // <-- Set Input Re-direct flag to true 
+		      arguments[i] = NULL;		      // <-- set "<" argument string to NULL
+		    }
+		    else if( !strcmp(arguments[i], "|") ) {
+		      pipeFlagSet = true;
+		      arguments[i] = NULL;
+		    }
 		  }
 		}
 
@@ -142,14 +146,13 @@ int main()
 		{
 		  fprintf(stdout, "Pipe ( | ) operator detected!\n");
 		  fflush(stdout);
-		  fprintf(stdout, "Pipe Argument 1  ==  %s\n", pipeArguments[0]);
-		  fflush(stdout);
-		  // fprintf(stdout, "Pipe Argument 2  ==  %s\n", pipeArguments[1]);
-		  // fflush(stdout);
-		  // fprintf(stdout, "Pipe Argument 3  ==  %s\n", pipeArguments[2]);
-		  // fflush(stdout);
-		  // fprintf(stdout, "Pipe Argument 4  ==  %s\n", pipeArguments[3]);
-		  // fflush(stdout);
+		  for(uint i = 0; i < pipeIndex; i++)
+		  {
+		    fprintf(stdout, "Argument # %u  ==  %s\n", i, pipeArguments[i]);
+		    fflush(stdout);
+		  }
+		    fprintf(stdout, "Argument pipeIndex  ==  %s\n", pipeArguments[pipeIndex]);
+		    fflush(stdout);
 		}
 
 		// Run the Command that has been input
