@@ -25,14 +25,15 @@ int main()
     while(should_run)
     {
 	memset(redirectFile, 0, sizeof(redirectFile));
-        printf("\033[;32m");        // <-- Create Green text
-        fprintf(stdout, "osh> ");   // <-- Prompt User for Input
-        fflush(stdout);             // <-- Flush I/O (Output) buffers
-        printf("\033[;37m");        // <-- Revert back to White Text
-        char string[MAXLENCOMM];
-        char *arguments[MAX_ARG];
-        fgets(string, MAXLENCOMM, stdin); // <-- Read user input from stdIn
-        string[strcspn(string, "\n")] = 0; // <-- Remove User Input NewLine Character "\n"
+	printf("\033[;32m");        // <-- Create Green text
+	fprintf(stdout, "osh> ");   // <-- Prompt User for Input
+	fflush(stdout);             // <-- Flush I/O (Output) buffers
+	printf("\033[;37m");        // <-- Revert back to White Text
+	char string[MAXLENCOMM];
+	char *arguments[MAX_ARG];
+	char *pipeArguments[MAX_ARG];
+	fgets(string, MAXLENCOMM, stdin); // <-- Read user input from stdIn
+	string[strcspn(string, "\n")] = 0; // <-- Remove User Input NewLine Character "\n"
         
         // Detect "!!" and empty string "" inputs <-- Handle Accordingly
         uint prevIndex;
@@ -93,9 +94,14 @@ int main()
         if(!parent) {
 	    bool redirectOutput = false;
 	    bool redirectInput = false;
+	    bool pipeFlagSet = false;	/* Flag to set when a pipe operator was found in the command */
 	    int fd;
+
             if(should_run) {
 		for(uint i = 0; i < lastIndex; i++) {
+		  if( pipeFlagSet ) {
+		    arguments[i] = NULL;
+		  }
 		  if( !strcmp(arguments[i], ">") ) {
 		    redirectOutput = true;		    // <-- Set Output Re-direct flag to true
 		    arguments[i] = NULL;		    // <-- set ">" argument string to NULL
@@ -107,6 +113,13 @@ int main()
 		    arguments[i] = NULL;		      // <-- set "<" argument string to NULL
 		    strcpy(redirectFile, arguments[i + 1]);   // <-- Copy Re-direct argument to "redirectFile" variable
 		    arguments[i + 1] = NULL;		      // <-- Set (inputt) Re-direct string argument to NULL
+		  }
+		  else if( !strcmp(arguments[i], "|") )
+		  {
+		    pipeFlagSet = true;
+		    arguments[i] = NULL;
+		    pipeArguments[0] = arguments[i + 1];
+		    arguments[i + 1] = NULL;
 		  }
 		}
 
@@ -124,6 +137,21 @@ int main()
 		  dup2(fd, STDIN_FILENO);
 		}
 
+		// If ( | ) Pipe flag has been set
+		if( pipeFlagSet )
+		{
+		  fprintf(stdout, "Pipe ( | ) operator detected!\n");
+		  fflush(stdout);
+		  fprintf(stdout, "Pipe Argument 1  ==  %s\n", pipeArguments[0]);
+		  fflush(stdout);
+		  // fprintf(stdout, "Pipe Argument 2  ==  %s\n", pipeArguments[1]);
+		  // fflush(stdout);
+		  // fprintf(stdout, "Pipe Argument 3  ==  %s\n", pipeArguments[2]);
+		  // fflush(stdout);
+		  // fprintf(stdout, "Pipe Argument 4  ==  %s\n", pipeArguments[3]);
+		  // fflush(stdout);
+		}
+
 		// Run the Command that has been input
                 int err = execvp(arguments[0], arguments);
                 if(err == -1) {
@@ -135,7 +163,7 @@ int main()
 
 	// Parent Process
         else {
-            if(should_wait) {
+            if(should_wait) { // <-- If "&" argument was NOT added to the END
                 pid_t wStatus;
                 wait(&wStatus);
                 while( (wait(&wStatus)) > 0 ) { //<-- Parent waits for all the child processes
