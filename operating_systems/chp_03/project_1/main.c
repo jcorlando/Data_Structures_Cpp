@@ -20,12 +20,10 @@ int main()
     struct CircularBuffer commandHistory = {.size = 0, .head = 0};
     int should_run = true;      /* flag to determine when to exit program */
     bool should_wait = true;    /* <-- flag to determine if Child Process should wait To Finish */
-    bool pipeFlagSet = false;	/* Flag to set when a pipe operator was found in the command */
     char redirectFile[MAX_ARG];
 
     while(should_run)
     {
-	pipeFlagSet = false;
 	memset(redirectFile, 0, sizeof(redirectFile));
         printf("\033[;32m");        // <-- Create Green text
         fprintf(stdout, "osh> ");   // <-- Prompt User for Input
@@ -33,7 +31,6 @@ int main()
         printf("\033[;37m");        // <-- Revert back to White Text
         char string[MAXLENCOMM];
         char *arguments[MAX_ARG];
-	char *pipeArguments[MAX_ARG];
         fgets(string, MAXLENCOMM, stdin); // <-- Read user input from stdIn
         string[strcspn(string, "\n")] = 0; // <-- Remove User Input NewLine Character "\n"
         
@@ -99,8 +96,6 @@ int main()
 	    int fd;
 	    int terminal_stdout_fd;
 	    int terminal_stdin_fd;
-
-	    // If "&" argument was added to the end
             if(should_run) {
 		for(uint i = 0; i < lastIndex; i++) {
 		  if( !strcmp(arguments[i], ">") ) {
@@ -114,19 +109,6 @@ int main()
 		    arguments[i] = NULL;		      // <-- set "<" argument string to NULL
 		    strcpy(redirectFile, arguments[i + 1]);   // <-- Copy Re-direct argument to "redirectFile" variable
 		    arguments[i + 1] = NULL;		      // <-- Set (inputt) Re-direct string argument to NULL
-		  }
-		  if( !strcmp(arguments[i], "|") ) {
-		    pipeFlagSet = true;
-		    arguments[i] = NULL;
-		    for(uint j = 0; j < lastIndex; j++)
-		    {
-		      if( (i + j + 1) <= lastIndex )
-		      {
-			pipeArguments[j] = arguments[i + j + 1];
-			arguments[i + j + 1] = NULL;
-			fprintf(stdout, "Pipe Argument %d  ==  %s\n", j, pipeArguments[j]);
-		      }
-		    }
 		  }
 		}
 
@@ -146,12 +128,6 @@ int main()
 		  /* Save current stdin for use later */
 		  terminal_stdin_fd = dup(STDIN_FILENO);
 		  dup2(fd, STDIN_FILENO);
-		}
-
-		// If ( | ) Pipe flag has been set
-		if(pipeFlagSet)
-		{
-		  fprintf(stdout, "Pipe ( | ) operator detected!\n");
 		}
 
 		// Run the Command that has been input
@@ -190,7 +166,7 @@ int main()
             if(should_wait) {
                 pid_t wStatus;
                 wait(&wStatus);
-                while( (wait(&wStatus)) > 0 ) { //<-- Parent waits for all the child processes
+                while( (wait(&wStatus)) > 0 ) { //<-- Father waits for all the child processes
                     // If Program Finished Execution Normally i.e. (Without External SIG-Kill)
                     if(WIFEXITED(wStatus)) {
                         int statusCode = WEXITSTATUS(wStatus); // <-- Capture Exit Status
