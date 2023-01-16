@@ -94,8 +94,6 @@ int main()
 	    bool redirectOutput = false;
 	    bool redirectInput = false;
 	    int fd;
-	    int terminal_stdout_fd;
-	    int terminal_stdin_fd;
             if(should_run) {
 		for(uint i = 0; i < lastIndex; i++) {
 		  if( !strcmp(arguments[i], ">") ) {
@@ -104,7 +102,7 @@ int main()
 		    strcpy(redirectFile, arguments[i + 1]); // <-- Copy Re-direct argument to "redirectFile" variable
 		    arguments[i + 1] = NULL;		    // <-- Set (output) Re-direct string argument to NULL
 		  }
-		  if( !strcmp(arguments[i], "<") ) {
+		  else if( !strcmp(arguments[i], "<") ) {
 		    redirectInput = true;		      // <-- Set Input Re-direct flag to true 
 		    arguments[i] = NULL;		      // <-- set "<" argument string to NULL
 		    strcpy(redirectFile, arguments[i + 1]);   // <-- Copy Re-direct argument to "redirectFile" variable
@@ -116,8 +114,6 @@ int main()
 		if(redirectOutput) {
 		  /* Create output file, GET file descriptor */
 		  fd = open(redirectFile, O_WRONLY| O_TRUNC | O_CREAT, 0666);
-		  /* Save current stdout for use later */
-		  terminal_stdout_fd = dup(STDOUT_FILENO);
 		  dup2(fd, STDOUT_FILENO);
 		}
 
@@ -125,8 +121,6 @@ int main()
 		if(redirectInput) {
 		  /* Read from input file, GET file descriptor */
 		  fd = open(redirectFile, O_RDONLY);
-		  /* Save current stdin for use later */
-		  terminal_stdin_fd = dup(STDIN_FILENO);
 		  dup2(fd, STDIN_FILENO);
 		}
 
@@ -135,28 +129,6 @@ int main()
                 if(err == -1) {
 		  exit(EXIT_FAILURE); // Always use exit() in child processes
                 }
-		if(redirectOutput) {
-		  /* Restore Terminal stdout */
-		  dup2(terminal_stdout_fd, STDOUT_FILENO);
-		  if(close(terminal_stdout_fd) == -1) {
-		    exit(EXIT_FAILURE);
-		  }
-		  /* Close file "fd" descriptor */
-		  if(close(fd) == -1) {
-		    exit(EXIT_FAILURE);
-		  }
-		}
-		if(redirectInput) {
-		  /* Restore Terminal stdin */
-		  dup2(terminal_stdin_fd, STDIN_FILENO);
-		  if(close(terminal_stdin_fd) == -1) {
-		    exit(EXIT_FAILURE);
-		  }
-		  /* Close file "fd" descriptor */
-		  if(close(fd) == -1) {
-		    exit(EXIT_FAILURE);
-		  }
-		}
             }
             exit(EXIT_SUCCESS); // Always use exit() in child processes
 	}
@@ -166,7 +138,7 @@ int main()
             if(should_wait) {
                 pid_t wStatus;
                 wait(&wStatus);
-                while( (wait(&wStatus)) > 0 ) { //<-- Father waits for all the child processes
+                while( (wait(&wStatus)) > 0 ) { //<-- Parent waits for all the child processes
                     // If Program Finished Execution Normally i.e. (Without External SIG-Kill)
                     if(WIFEXITED(wStatus)) {
                         int statusCode = WEXITSTATUS(wStatus); // <-- Capture Exit Status
