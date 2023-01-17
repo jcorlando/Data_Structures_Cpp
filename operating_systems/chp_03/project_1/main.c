@@ -89,6 +89,9 @@ int main()
             perror("fork");
             exit(EXIT_FAILURE);
         }
+
+	// pid for in case a pipe "|" operator was present
+	pid_t pipeParent;
 	
 	// Child Process
         if(!parent) {
@@ -97,6 +100,7 @@ int main()
 	    bool pipeFlagSet = false;	/* Flag to set when a pipe operator was found in the command */
 	    int fd;
 	    uint pipeIndex = 0;
+	    int pipeFd[2];
 
             if(should_run) {
 
@@ -107,22 +111,22 @@ int main()
 		    arguments[i] = NULL;	       // <-- Set (output) or (input) Re-direct string argument to NULL
 		  }
 		  else if ( pipeFlagSet ) {
-		    pipeArguments[pipeIndex] = arguments[i];
-		    arguments[i] = NULL;
-		    pipeIndex++;
+		    pipeArguments[pipeIndex] = arguments[i];// <-- Copy all subsequent arguments after the "|" operator to a
+		    arguments[i] = NULL;		    // <-- new argument array for piping between processes and set all
+		    pipeIndex++;			    // <-- existing arguments after "|" in the original array to NULL
 		  }
 		  else {
 		    if( !strcmp(arguments[i], ">") ) {
-		      redirectOutput = true;		    // <-- Set Output Re-direct flag to true
+		      redirectOutput = true;		    // <-- Set Output Re-direct flag to TRUE
 		      arguments[i] = NULL;		    // <-- set ">" argument string to NULL
 		    }
 		    else if( !strcmp(arguments[i], "<") ) {
-		      redirectInput = true;		      // <-- Set Input Re-direct flag to true 
+		      redirectInput = true;		      // <-- Set Input Re-direct flag to TRUE 
 		      arguments[i] = NULL;		      // <-- set "<" argument string to NULL
 		    }
 		    else if( !strcmp(arguments[i], "|") ) {
-		      pipeFlagSet = true;
-		      arguments[i] = NULL;
+		      pipeFlagSet = true;		// <-- Set Pipe flag to TRUE
+		      arguments[i] = NULL;		// <-- set "|" argument string to NULL
 		    }
 		  }
 		}
@@ -142,25 +146,55 @@ int main()
 		}
 
 		// If ( | ) Pipe flag has been set
-		if( pipeFlagSet )
-		{
-		  fprintf(stdout, "Pipe ( | ) operator detected!\n");
-		  fflush(stdout);
-		  for(uint i = 0; i < pipeIndex; i++)
-		  {
-		    fprintf(stdout, "Argument # %u  ==  %s\n", i, pipeArguments[i]);
-		    fflush(stdout);
+		if( pipeFlagSet ) {
+		  
+		  // Create pipe
+		  if ( pipe(pipeFd) == -1 ) {
+		    exit(EXIT_FAILURE);
 		  }
-		    fprintf(stdout, "Argument pipeIndex  ==  %s\n", pipeArguments[pipeIndex]);
-		    fflush(stdout);
+		  
+		  // Create another CHILD process for piping
+		  if( (pipeParent = fork()) == -1 ) {
+		      perror("fork");
+		      exit(EXIT_FAILURE);
+		  }
+
+		  // <-- Pipe Child -->
+		  if ( !pipeParent ) {
+		    dup2(pipeFd[1], STDOUT_FILENO);
+		    close(pipeFd[0]);
+		    close(pipeFd[1]);
+
+		    // Run the Command all after "|" pipe operator
+		    int err = execvp(arguments[0], arguments);
+		    if(err == -1) {
+		      exit(EXIT_FAILURE); // Always use exit() in child processes
+		    }
+		  }
+
+		  // <-- Pipe Parent -->
+		  else {
+		    dup2(pipeFd[0], STDIN_FILENO);
+		    close(pipeFd[0]);
+		    close(pipeFd[1]);
+		  }
 		}
 
 		// Run the Command that has been input
-                int err = execvp(arguments[0], arguments);
-                if(err == -1) {
-		  exit(EXIT_FAILURE); // Always use exit() in child processes
-                }
+		if (pipeFlagSet) {
+		  int err = execvp(pipeArguments[0], pipeArguments);
+		  if(err == -1) {
+		    exit(EXIT_FAILURE); // Always use exit() in child processes
+		  }
+		}
+		else {
+		  int err = execvp(arguments[0], arguments);
+		  if(err == -1) {
+		    exit(EXIT_FAILURE); // Always use exit() in child processes
+		  }
+		}
             }
+
             exit(EXIT_SUCCESS); // Always use exit() in child processes
 	}
 
