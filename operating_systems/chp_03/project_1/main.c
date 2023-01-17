@@ -98,9 +98,9 @@ int main()
 	    bool redirectOutput = false;
 	    bool redirectInput = false;
 	    bool pipeFlagSet = false;	/* Flag to set when a pipe operator was found in the command */
-	    int fd;
-	    uint pipeIndex = 0;
-	    int pipeFd[2];
+	    int fd; /* File descriptor for re-direction file */
+	    uint pipeIndex = 0; /* size of the pipe arguments array */
+	    int pipeFd[2]; /* pipe file descriptors */
 
             if(should_run) {
 
@@ -180,13 +180,14 @@ int main()
 		  }
 		}
 
-		// Run the Command that has been input
+		// IF piping operator found run everything after the "|" Command that has been input
 		if (pipeFlagSet) {
 		  int err = execvp(pipeArguments[0], pipeArguments);
 		  if(err == -1) {
 		    exit(EXIT_FAILURE); // Always use exit() in child processes
 		  }
 		}
+		// ELSE Run the Command that has been input
 		else {
 		  int err = execvp(arguments[0], arguments);
 		  if(err == -1) {
