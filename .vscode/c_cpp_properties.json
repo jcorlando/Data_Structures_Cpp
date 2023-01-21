@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/lib/modules/6.0.12-76060006-generic/build/include/**",
+                "/usr/src/linux-headers-6.0.12-76060006/include/**",
+                "/usr/src/linux-headers-6.0.12-76060006-generic/include/**",
+                "/usr/src/linux-headers-6.0.12-76060006/arch/x86/include/**",
+                "/usr/src/linux-headers-6.0.12-76060006-generic/arch/x86/include/**"
+            ],
+            "defines": [],
+            "compilerPath": "",
+            "cStandard": "c11",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

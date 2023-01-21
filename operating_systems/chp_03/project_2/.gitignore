@@ -1,4 +1,12 @@
 
-
 *.txt
+*.o
+*.cmd
+*.ko
+*.ko
+*.symvers
+*.order
+*.mod
+project2.mod.c
+
 
