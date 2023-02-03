@@ -7,32 +7,32 @@ In this project, I will write a Linux kernel module that uses the /proc file sys
 
 &nbsp;
 
-## **Linux tips for working with Kernel modules**
-## **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And some project extras**
+### **Linux tips for working with Kernel modules**
+### **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And some project extras**
 
 &nbsp;
 
-## **list all kernel modules that are currently loaded**
+#### **list all kernel modules that are currently loaded**
 ```bash
 lsmod
 ```
 
-## **Check the contents of messages in the kernel log buffer**
+#### **Check the contents of messages in the kernel log buffer**
 ```bash
 dmesg
 ```
 
-## **Load kernel modules**
+#### **Load kernel modules**
 ```bash
 sudo insmod project2.ko
 ```
 
-## **Remove kernel modules**
+#### **Remove kernel modules**
 ```bash
 sudo rmmod project2
 ```
 
-## **Clear kernel log buffer**
+#### **Clear kernel log buffer**
 ```bash
 sudo dmesg -c
 ```
