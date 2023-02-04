@@ -13,10 +13,8 @@ command = [bash] pid = [1395] state = [1]
 ---
 ---
 
-&nbsp;
-
-#### **Linux tips for working with Kernel modules**
-#### **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And some project extras**
+### **Linux tips for working with Kernel modules**
+### **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And some project extras**
 
 ##### **Compile Module**
 ```bash
