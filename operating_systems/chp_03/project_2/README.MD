@@ -4,13 +4,19 @@ In this project, I will write a Linux kernel module that uses the /proc file sys
 
 ---
 ---
+## Project Results
+```bash
+echo "1395" > /proc/pid
+cat /proc/pid
+command = [bash] pid = [1395] state = [1]
+```
+---
+---
 
 &nbsp;
 
 #### **Linux tips for working with Kernel modules**
 #### **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And some project extras**
-
-&nbsp;
 
 ##### **Compile Module**
 ```bash
