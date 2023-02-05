@@ -83,9 +83,13 @@ static ssize_t proc_read(struct file *file, char __user *usr_buf, size_t count, 
 
   tsk = pid_task( find_vpid(l_pid), PIDTYPE_PID );
 
+  if( tsk == NULL ) {
+    return 0;
+  }
+
   completed = 1;
 
-  returnValue = sprintf( buffer, "The PID info is  ==  %ld\n", l_pid );
+  returnValue = sprintf( buffer, "The task command is  ==  %s\nThe value of task pid is  ==  %d\nThe current state of the task is  ==  %u\n", tsk->comm, tsk->pid, tsk->__state );
 
   copyReturnValue = copy_to_user(usr_buf, buffer, returnValue);
 
