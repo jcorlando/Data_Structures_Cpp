@@ -1,4 +1,5 @@
 #include <linux/init.h>
+#include <linux/sched.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/proc_fs.h>
@@ -7,6 +8,9 @@
 
 #define BUFFER_SIZE 512
 #define PROC_NAME "pid"
+
+/* the current pid */
+static long l_pid;
 
 
 // Function prototypes for user space reading & writing of /proc/pid
@@ -63,6 +67,8 @@ static ssize_t proc_read(struct file *file, char __user *usr_buf, size_t count, 
   int returnValue = 0;
   char buffer[BUFFER_SIZE];
   static int completed = 0;
+  struct task_struct *tsk = NULL;
+
 
   // This variable is unused and its only purpose is to silence compiler warnings
   static unsigned long copyReturnValue;
@@ -75,9 +81,11 @@ static ssize_t proc_read(struct file *file, char __user *usr_buf, size_t count, 
     return 0;
   }
 
+  tsk = pid_task( find_vpid(l_pid), PIDTYPE_PID );
+
   completed = 1;
 
-  returnValue = sprintf( buffer, "The PID info is  ==  %s", k_mem );
+  returnValue = sprintf( buffer, "The PID info is  ==  %ld\n", l_pid );
 
   copyReturnValue = copy_to_user(usr_buf, buffer, returnValue);
 
@@ -96,17 +104,12 @@ static ssize_t proc_write(struct file *file, const char __user *usr_buf, size_t 
     printk( KERN_INFO "Error copying from user\n");
     return -1;
   }
-
-  // Print to kernel log buffer
-  printk(KERN_INFO "%s", k_mem);
-
-  /**
-    * kstrol() will not work because the strings are not guaranteed
-    * to be null-terminated.
-    *
-    * sscanf() must be used instead.
-  */
-
+  
+  
+  // Convert string pid number to long integer
+  sscanf(k_mem, "%ld", &l_pid);
+  
+  
   return count;
 }
 
