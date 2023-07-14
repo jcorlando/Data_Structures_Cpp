@@ -4,4 +4,44 @@ In this project, I will write a Linux kernel module that uses the /proc file sys
 
 ---
 ---
+## Project Results
+```bash
+echo "1395" > /proc/pid
+cat /proc/pid
+command = [bash] pid = [1395] state = [1]
+```
+---
+---
 
+### **Linux tips for working with Kernel modules**
+### **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And some project extras**
+
+##### **Compile Module**
+```bash
+clear && make clean && make
+```
+
+##### **list all kernel modules that are currently loaded**
+```bash
+lsmod
+```
+
+##### **Check the contents of messages in the kernel log buffer**
+```bash
+dmesg
+```
+
+##### **Load kernel modules**
+```bash
+sudo insmod project2.ko
+```
+
+##### **Remove kernel modules**
+```bash
+sudo rmmod project2
+```
+
+##### **Clear kernel log buffer**
+```bash
+sudo dmesg -c
+```

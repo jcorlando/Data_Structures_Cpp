@@ -1,0 +1,12 @@
+
+*.txt
+*.o
+*.cmd
+*.ko
+*.ko
+*.symvers
+*.order
+*.mod
+project3.mod.c
+
+
